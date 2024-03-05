@@ -11,9 +11,14 @@ gtrend_state_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/
 
 #Select Trends
 trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-trends = st.multiselect("Search_Term",trend_options)
+default_trend_options = [
+    "Cigarette",
+    "Diet",
+    "Statin"
+]
+trends = st.multiselect("Search_Term",trend_options,default_trend_options)
 
-subset = gtrend_US_df[gtrend_US_df["Search_Term"] == trends]
+subset = gtrend_US_df[gtrend_US_df["Search_Term"].isin(trends)]
 
 
 #Test Plot
