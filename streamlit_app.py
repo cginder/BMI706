@@ -69,6 +69,7 @@ race_options = subset["Race"].unique().tolist()
 race = st.multiselect("Select Races:",
     options = race_options
 )
+subset = subset[subset["Race"].isin(race)]
 
 #State Selectors
 state_options = subset['State'].unique().tolist()
@@ -87,10 +88,13 @@ trends = st.multiselect("Search_Term",
 trend_subset = merged_df[merged_df["Search_Term"].isin(trends)]
 
 #Outcome Selector
-outcome_options = subset[""]
+outcome_options = subset["cause_of_death"].unique.tolist()
+outcomes = st.multiselect("Select Cause(s) of Death",
+    options = outcome_options
+)
+subset = subset[subset["cause_of_death"].isin(outcomes)]
 
-
-#Test Plot
+#Test Plot 1
 chart = alt.Chart(trend_subset).mark_line().encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("Annual_Avg_Trend_Value"),
@@ -98,3 +102,13 @@ chart = alt.Chart(trend_subset).mark_line().encode(
 )
 
 st.altair_chart(chart,use_container_width=True)
+
+
+#Test Plot 2
+chart2 = alt.Chart(subset).mark_line().encode(
+    x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
+    y=alt.Y("sum(Deaths):Q"),
+    color="cause_of_death"
+)
+
+st.altair_chart(chart2,use_container_width=True)
