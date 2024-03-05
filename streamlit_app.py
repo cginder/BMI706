@@ -5,9 +5,10 @@ import streamlit as st
 
 
 #Open Tasks
-#[] combine search term trends into one annual metric (average? Last?)
-#[] get absolute/relative state level trends by multiplying state trend_value * trend value for that year
+#[x] combine search term trends into one annual metric (average? Last?)
+#[x] get absolute/relative state level trends by multiplying state trend_value * trend value for that year
 #[] ?create radio buttons to turn on/off filtering by each condition
+
 
 ##Read Data
 mortality_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/mortality_data.csv")
@@ -63,6 +64,12 @@ subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) &
     (subset['Age_Group_Factor'] <= age_group_end_factor)
 ]
 
+#Race Selectors
+race_options = subset["Race"].unique().tolist()
+race = st.multiselect("Select Races:",
+    options = race_options
+)
+
 #State Selectors
 state_options = subset['State'].unique().tolist()
 default_states = ["Indiana","Massachusetts"]
@@ -78,6 +85,9 @@ trends = st.multiselect("Search_Term",
     options = trend_options,default = default_trend_values)
 
 trend_subset = merged_df[merged_df["Search_Term"].isin(trends)]
+
+#Outcome Selector
+outcome_options = subset[""]
 
 
 #Test Plot
