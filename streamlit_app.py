@@ -38,7 +38,7 @@ age_group_mapping = {
 }
 age_group_codes = list(age_group_mapping.keys())
 mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(age_group_mapping)
-st.write(list(age_group_mapping.values()))
+st.write(list(age_group_mapping.keys()))
 
 ##Master Filter Chart
 subset = mortality_df
