@@ -5,7 +5,7 @@ import streamlit as st
 
 # Read Data
 #mortality_df = pd.read_csv("https://github.com/cginder/BMI706/blob/main/Data/Merged%20Data/mortality_data.csv")
-gtrend_US_df = pd.read_csv("https://github.com/cginder/BMI706/blob/main/Data/Merged%20Data/search_US_trends.csv")
+gtrend_US_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_US_trends.csv")
 #gtrend_state_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_state_based.csv")
 
 #Test Plot
