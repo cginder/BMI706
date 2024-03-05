@@ -3,6 +3,11 @@ import pandas as pd
 import streamlit as st
 
 
+
+#Open Tasks
+#[] combine search term trends into one annual metric (average? Last?)
+#[] get absolute/relative state level trends by multiplying state trend_value * trend value for that year
+
 # Read Data
 mortality_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/mortality_data.csv")
 gtrend_US_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_US_trends.csv")
