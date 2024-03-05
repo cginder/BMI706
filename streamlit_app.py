@@ -44,7 +44,7 @@ subset = mortality_df
 year = st.slider('Year',1999,2019,2009)
 sex = st.radio("Sex",["Male","Female"])
 age_group_start_factor, age_group_end_factor = st.select_slider(
-    'Select Age Groups",
+    "Select Age Group(s):",
     min_value=0,
     max_value=len(age_group_codes)-1,
     format_func=lambda x: age_group_codes[x]
