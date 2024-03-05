@@ -47,9 +47,7 @@ subset = mortality_df
 #Year Range Selector
 year_range = st.slider('Years:',
         2004,2019,(2007,2009))
-subset = subset[(subset['Year'] >= year_range[0]) & subset['Year'] <= year_range[1]]
-st.write(year_range[0])
-st.write(year_range[1])
+subset = subset[(subset['Year'] >= year_range[0]) & (subset['Year'] <= year_range[1])]
 
 #Sex Selector
 sex = st.radio("Sex",["Male","Female"])
