@@ -107,7 +107,7 @@ st.altair_chart(chart,use_container_width=True)
 #Test Plot 2
 chart2 = alt.Chart(subset).mark_line().encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("sum(Deaths):Q"),
+    y=alt.Y("Deaths:Q"),
     color="cause_of_death"
 )
 st.write(subset.head())
