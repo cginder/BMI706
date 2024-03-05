@@ -38,13 +38,20 @@ age_group_mapping = {
 }
 age_group_codes = list(age_group_mapping.keys())
 mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(age_group_mapping)
+print(age_group_codes)
 
 ##Master Filter Chart
 subset = mortality_df
 
+#Year Selector
 year = st.slider('Year',1999,2019,2009)
-sex = st.radio("Sex",["Male","Female"])
+subset = subset[subset['Year'] == year]
 
+#Sex Selector
+sex = st.radio("Sex",["Male","Female"])
+subset = subset[subset['Sex'] == sex]
+
+#Age Group Range Selector
 age_group_range = st.slider(
     "Select Age Group(s):",
     min_value=0,
@@ -55,19 +62,15 @@ age_group_range = st.slider(
 age_group_start_factor = age_group_mapping[age_group_codes[age_group_range[0]]]
 age_group_end_factor = age_group_mapping[age_group_codes[age_group_range[1]]]
 
+subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) &
+    (subset['Age_Group_Factor'] <= age_group_end_factor)
+]
+
+#Trend Selector
 trend_options = gtrend_US_df["Search_Term"].unique().tolist()
 default_trend_values = ["Cigarette","Diet","Statin"]
 trends = st.multiselect("Search_Term",
     options = trend_options,default = default_trend_values)
-
-subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) &
-    (subset['Age_Group_Factor'] <= age_group_end_factor)
-]
-subset = subset[subset['Sex'] == sex]
-subset = subset[subset['Year'] == year]
-
-
-
 
 trend_subset = gtrend_US_df[gtrend_US_df["Search_Term"].isin(trends)]
 
