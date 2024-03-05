@@ -112,5 +112,5 @@ chart2 = alt.Chart(subset).mark_point().encode(
     y=alt.Y("sum(Deaths):Q"),
     color="cause_of_death"
 )
-st.write(subset.head())
+#st.write(subset.head())
 st.altair_chart(chart2,use_container_width=True)
