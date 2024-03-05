@@ -52,8 +52,9 @@ subset = subset[subset['Gender'] == sex]
 
 #Age Group Range Selector
 age_group_range = st.select_slider(
-    "Select Age Group(s):",
+    "Select Age Group Range:",
     options=age_group_codes,
+    value=('15-24','75-84')
     #max_value=len(age_group_codes)-1,
     #value=(0,len(age_group_codes)-1),
     #format_func=lambda x: age_group_codes[x]
