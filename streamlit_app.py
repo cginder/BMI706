@@ -16,6 +16,7 @@ gtrend_state_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/
 
 ##Data Processing
 #Combine US Trend Data Into Annual Data
+gtrend_US_df['Month'] = pd.to_datetime(gtrend_US_df['Month'])
 gtrend_US_df['Year'] = gtrend_US_df['Month'].dt.year #convert to date/time format
 annual_avg_df = gtrend_US_df.groupby(['Year', 'Search_Term'])['Trend_Value'].mean().reset_index() #calculate average per year
 annual_avg_df.rename(columns={'Trend_Value': 'Annual_Avg_Trend_Value'}, inplace=True) #rename for clarity
