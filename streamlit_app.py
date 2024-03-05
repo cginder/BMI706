@@ -38,7 +38,6 @@ age_group_mapping = {
 }
 age_group_codes = list(age_group_mapping.keys())
 mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(age_group_mapping)
-st.write(list(age_group_mapping.keys()))
 
 ##Master Filter Chart
 subset = mortality_df
@@ -54,9 +53,9 @@ subset = subset[subset['Gender'] == sex]
 #Age Group Range Selector
 age_group_range = st.select_slider(
     "Select Age Group(s):",
-    min_value=0,
-    max_value=len(age_group_codes)-1,
-    value=(0,len(age_group_codes)-1),
+    options=age_group_codes,
+    #max_value=len(age_group_codes)-1,
+    #value=(0,len(age_group_codes)-1),
     #format_func=lambda x: age_group_codes[x]
 )
 age_group_start_factor = age_group_mapping[age_group_codes[age_group_range[0]]]
