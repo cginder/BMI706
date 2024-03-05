@@ -83,7 +83,7 @@ trend_subset = gtrend_US_df[gtrend_US_df["Search_Term"].isin(trends)]
 #Test Plot
 chart = alt.Chart(merged_df).mark_line().encode(
     x=alt.X("Year"),
-    y=alt.Y("Trend_Value"),
+    y=alt.Y("Annual_Avg_Trend_Value"),
     color="Search_Term"
 )
 
