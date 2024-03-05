@@ -108,7 +108,7 @@ st.altair_chart(chart,use_container_width=True)
 
 #Test Plot 2
 chart2 = alt.Chart(subset).mark_point().encode(
-    x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
+    x=alt.X("Year",scale=alt.Scale(domain=year_range),axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("sum(Deaths):Q"),
     color="cause_of_death"
 )
