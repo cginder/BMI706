@@ -63,6 +63,14 @@ subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) &
     (subset['Age_Group_Factor'] <= age_group_end_factor)
 ]
 
+#State Selectors
+state_options = subset['State'].unique().tolist()
+default_states = ["Indiana","Massachusetts"]
+states = st.multiselect("State:",
+    options = state_options,default=default_states
+)
+subset = subset[subset["State"].isin(states)]
+
 #Trend Selector
 trend_options = gtrend_US_df["Search_Term"].unique().tolist()
 default_trend_values = ["Cigarette","Diet","Statin"]
