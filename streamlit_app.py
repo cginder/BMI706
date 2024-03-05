@@ -50,7 +50,7 @@ age_group_range = st.slider(
     min_value=0,
     max_value=len(age_group_codes)-1,
     value=(0,len(age_group_codes)-1),
-    format_func=lambda x: age_group_codes[x]
+    #format_func=lambda x: age_group_codes[x]
 )
 age_group_start_factor = age_group_mapping[age_group_codes[age_group_range[0]]]
 age_group_end_factor = age_group_mapping[age_group_codes[age_group_range[1]]]
