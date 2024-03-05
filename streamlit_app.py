@@ -44,12 +44,17 @@ subset = mortality_df
 
 year = st.slider('Year',1999,2019,2009)
 sex = st.radio("Sex",["Male","Female"])
-age_group_start_factor, age_group_end_factor = st.select_slider(
+
+age_group_range = st.slider(
     "Select Age Group(s):",
     min_value=0,
     max_value=len(age_group_codes)-1,
+    value=(0,len(age_group_codes)-1),
     format_func=lambda x: age_group_codes[x]
 )
+age_group_start_factor = age_group_mapping[age_group_codes[age_group_range[0]]]
+age_group_end_factor = age_group_mapping[age_group_codes[age_group_range[1]]]
+
 trend_options = gtrend_US_df["Search_Term"].unique().tolist()
 default_trend_values = ["Cigarette","Diet","Statin"]
 trends = st.multiselect("Search_Term",
