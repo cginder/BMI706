@@ -8,6 +8,7 @@ import streamlit as st
 #[x] combine search term trends into one annual metric (average? Last?)
 #[x] get absolute/relative state level trends by multiplying state trend_value * trend value for that year
 #[] ?create radio buttons to turn on/off filtering by each condition
+#[] year range 
 
 
 ##Read Data
@@ -44,8 +45,8 @@ mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(
 subset = mortality_df
 
 #Year Selector
-year = st.slider('Year',1999,2019,2009)
-subset = subset[subset['Year'] == year]
+#year = st.slider('Year',1999,2019,2009)
+#subset = subset[subset['Year'] == year] ##### need to update
 
 #Sex Selector
 sex = st.radio("Sex",["Male","Female"])
@@ -105,7 +106,7 @@ st.altair_chart(chart,use_container_width=True)
 
 
 #Test Plot 2
-chart2 = alt.Chart(subset).mark_bar().encode(
+chart2 = alt.Chart(subset).mark_point().encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("sum(Deaths):Q"),
     color="cause_of_death"
