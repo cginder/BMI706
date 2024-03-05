@@ -88,7 +88,7 @@ trends = st.multiselect("Search_Term",
 trend_subset = merged_df[merged_df["Search_Term"].isin(trends)]
 
 #Outcome Selector
-outcome_options = subset["cause_of_death"].unique.tolist()
+outcome_options = subset["cause_of_death"].unique().tolist()
 outcomes = st.multiselect("Select Cause(s) of Death",
     options = outcome_options
 )
