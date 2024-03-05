@@ -44,9 +44,10 @@ mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(
 ##Master Filter Chart
 subset = mortality_df
 
-#Year Selector
-#year = st.slider('Year',1999,2019,2009)
-#subset = subset[subset['Year'] == year] ##### need to update
+#Year Range Selector
+year_range = st.slider('Years:',
+        2004,2019,(2007,2009))
+subset = subset[(subset['Year'] >= year_range[0]) & subset['Year'] <= year_range[1]]
 
 #Sex Selector
 sex = st.radio("Sex",["Male","Female"])
