@@ -257,8 +257,8 @@ st.altair_chart(chart6,use_container_width=True)
 #)
 
 heat_outcome = st.selectbox("Select Cause of Death",
-    options = outcome_options, default = "Acute Myocardial Infarction"
-)
+    options = outcome_options)
+
 lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"].isin(heat_outcome)]
 
 #create lag
