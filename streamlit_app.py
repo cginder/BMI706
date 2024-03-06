@@ -347,10 +347,12 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
     search_heat_selection
 )
 
-regression_line = chart8.alt.transform_regression('Annual_Avg_Trend_Value','Mortality_Rate').mark_line().encode(
-    color='grey',
-    strokeDash=[5,5]
-)
+regression_line = chart8.alt.transform_regression('Annual_Avg_Trend_Value','Mortality_Rate').mark_line()
+
+#.encode(
+#    color='grey',
+#    strokeDash=[5,5]
+#)
 
 combined_chart = alt.vconcat(chart7,chart8+regression_line)
 
