@@ -176,7 +176,7 @@ connected_scatter_df['Year'] = pd.to_numeric(connected_scatter_df['Year'], error
 slider = alt.binding_range(min=2009, max=2014, step=1, name='slider_year')
 select_year = alt.param(bind=slider,value=2013)
 
-base_chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
+chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.condition(
