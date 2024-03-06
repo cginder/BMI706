@@ -224,7 +224,7 @@ st.altair_chart(chart5,use_container_width=True)
 
 
 ### Heatmap
-US_ave_mortality_df = mortality_df.groupby(['Year','cause_of_death'])[['Deaths','Population']].sum()
+US_ave_mortality_df = mortality_df.groupby(['Year','cause_of_death'])[['Deaths','Population']].sum().reset_index()
 
 
 
