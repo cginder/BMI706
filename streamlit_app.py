@@ -310,10 +310,9 @@ chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 st.altair_chart(chart10,use_container_width=True)
 
 st.write("Debug3")
-'''
 
 # Selector for Lag and Search Term
-heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
+heat_selection = alt.selection_point(fields=['Lag','Search_Term'],on='click',clear='dblclick', toggle='true')
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag',
@@ -326,6 +325,8 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 ).add_selection(
     heat_selection
 )
+
+'''
 
 chart8 = alt.Chart(lag_points_df).mark_point().encode(
     x="Year_x",
