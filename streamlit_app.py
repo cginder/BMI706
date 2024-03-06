@@ -339,15 +339,15 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 
 
 chart8 = alt.Chart(lag_points_df).transform_filter(
-    heat_selection
+    lag_heat_selection
 ).mark_point().encode(
     x="Year_y:O",
     y="Mortality_Rate:Q",
-    color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
+    color= alt.condition(lag_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
 ).properties(
     width=550
 ).add_params(
-    heat_selection
+    lag_heat_selection
 )
 
 combined_chart = alt.vconcat(chart7,chart8)
