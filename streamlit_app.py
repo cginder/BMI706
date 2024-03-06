@@ -332,7 +332,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     heat_selection
 )
 
-st.altair_chart(chart7,use_container_width=True))
+st.altair_chart(chart7,use_container_width=True)
 
 '''
 
