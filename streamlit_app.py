@@ -172,7 +172,7 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 
 st.write(connected_scatter_df['Year'].min())
 st.write(connected_scatter_df['Year'].max())
-st.write(type(connect_scatter_df['Year']))
+st.write(type(connect_scatter_df['Year'][0]))
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1,name='slider')
 select_year = alt.selection_single(name="select_year",fields=['Year'],init={'Year':connected_scatter_df['Year'].min()},bind=slider)
 
