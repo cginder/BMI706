@@ -333,24 +333,27 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     heat_selection
 )
 
-st.altair_chart(chart7,use_container_width=True)
-
-'''
-
 chart8 = alt.Chart(lag_points_df).mark_point().encode(
     x="Year_x",
     y="Morality_Rate:Q",
-    color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('ligfhtgray'))
+    color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
 ).add_params(
     heat_selection
 )
 
-#st.altair_chart(chart8,use_container_width=True)
-
-
 combined_chart = alt.vconcat(chart7,chart8)
 
 st.altair_chart(combined_chart,use_container_width=True)
+
+
+#st.altair_chart(chart7,use_container_width=True)
+
+'''
+
+
+#st.altair_chart(chart8,use_container_width=True)
+
+
 
 
 '''
