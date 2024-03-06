@@ -278,11 +278,17 @@ for search_term in trend_options:
         correlations.append(correlation)
     correlation_results[search_term] = correlations
 
-# Create the DataFrame to display the table, convert to long
-lag_correlation_table_df = pd.DataFrame(correlation_results)
-lag_heatmap_df = pd.melt(lag_correlation_table_df, id_vars=df.columns[0], var_name='Lag', value_name='Correlation')
+# Now that we have our correlations calculated, let's turn this into a DataFrame
+lag_correlation_df = pd.DataFrame(correlation_results, index=lag_values)
 
-st.write(lag_correlation_table_df.head(30))
+# Convert the DataFrame to long format
+lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name='Search_Term', value_name='Correlation')
+
+# Give the 'index' column a more meaningful name
+lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
+
+
+st.write(lag_correlation_df.head(30))
 st.write(lag_heatmap_df.head(30))
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
@@ -290,7 +296,8 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    y='Search_Term:N',
    color='Correlation:Q'
 ).properties(
-    title="Correlation of Google Search Terms with Cause of Mortality",
+    title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
+           "subtitle":f"Selected outcome:"}, 
     width=550
 )
 st.altair_chart(chart7,use_container_width=True)
