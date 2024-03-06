@@ -172,7 +172,13 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-    color=alt.Color("State",legend=alt.Legend(orient='right'))
+    color=alt.Color("State",legend=alt.Legend(orient='right')),
+    tooltip=[
+        alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
+        alt.Tooltip('State:N', title='State'),
+        alt.Tooltip('Relative_Weighting:Q', title='Relative Weighting'),
+        alt.Tooltip('Year:O', title='Year') 
+    ]
 ).properties(
     title={"text":"Connected Scatter Plot: Mortality by Search Trends",
            "subtitle":[f"Selected outcomes: {outcomes_title}",f"Selected search term: {chart_3_trend}"]},
