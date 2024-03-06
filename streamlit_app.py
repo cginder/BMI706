@@ -214,4 +214,4 @@ chart6 = alt.Chart(connected_scatter_df).mark_point().encode(
 ).add_params(
     select_year
 )
-st.altair_chart(chart6,use_container_width=True)'
+st.altair_chart(chart6,use_container_width=True)
