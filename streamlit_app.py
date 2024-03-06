@@ -334,7 +334,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 )
 st.write('debug5')
 
-st.write(heat_selection)
+#st.write(heat_selection)
 st.write(heat_selection.Search_Term)
 
 
