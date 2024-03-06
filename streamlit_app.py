@@ -291,8 +291,6 @@ lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
 # Selector for Lag and Search Term
 heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
-color = alt.condition(heat_selection,alt.Color('Correlation:Q'),alt.value('ligfhtgray'))
-
 
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
@@ -310,7 +308,7 @@ st.altair_chart(chart10,use_container_width=True)
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
    y='Search_Term:N',
-   color=color #'Correlation:Q'
+   color= alt.condition(heat_selection,alt.Color('Correlation:Q'),alt.value('ligfhtgray'))
 ).properties(
     title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
            "subtitle":f"Selected outcome:{heat_outcome}"}, 
@@ -320,7 +318,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 chart8 = alt.Chart(lag_points_df).mark_point().encode(
     x="Year_x:O",
     y="Morality_Rate:Q",
-    color=color
+    color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('ligfhtgray'))
 ).add_params(
     heat_selection
 )
