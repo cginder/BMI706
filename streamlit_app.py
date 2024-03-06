@@ -183,12 +183,15 @@ points = alt.Chart(connected_scatter_df).mark_point().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     order="Year:O",
-    color="State:N",
-    opacity=alt.condition(state_selection,
-                          alt.condition(alt.datum.Year < select_year,
-                                        alt.value(1),
-                                        alt.value(0.5)),
-                          alt.value(0.5)),
+    color=alt.condition(
+        state_selection,
+        "State:N",
+        alt.value(0.4)),
+    opacity=alt.condition(
+        (alt.datum.Year < select_year),
+        alt.value(1),
+        alt.value(0.25)
+    ),
     tooltip=[
         alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
         alt.Tooltip('State:N', title='State'),
@@ -208,9 +211,11 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
     color="State:N",
     detail="State:N"  # This ensures lines are drawn for each state separately
 ).transform_filter(
-    'datum.Year <= SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
+    'datum.Year < SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
 ).add_params(
     select_year
+).add_selection(
+    state_selection
 )
 
 chart5 = points + lines
