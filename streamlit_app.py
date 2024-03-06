@@ -353,9 +353,9 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
    # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
 ).properties(
     width=550
-).add_selection(
+).add_params(
     lag_heat_selection
-).add_selection(
+).add_params(
     search_heat_selection
 )
 
