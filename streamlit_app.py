@@ -251,12 +251,15 @@ st.altair_chart(chart6,use_container_width=True)
 
 ### Lagging Heatmap
 #Drop-down selector for outcome
-#outcome_dropdown = alt.binding_select(options=outcome_options,name='cause_of_death')
+#outcome_dropdown = alt.binding_select(options=outcome_options)
 #outcome_select = alt.selection_single(
-#    fields=['cause_of_death'],bind=outcome_dropdown,init={'cause_of_death': outcome_dropdown[0]}
+#   fields=['cause_of_death'],bind=outcome_dropdown,name="OutcomeSelector",init={'cause_of_death': outcome_options[0]}
 #)
-lag_slider = alt.binding_range(min=-5,max=5, step=1,name='Select year offset between search terms and outcome: ')
-select_lag = alt.param(name="LagSelector",bind=lag_slider,value=0)
+
+heat_outcome = st.selectbox("Select Cause of Death",
+    options = outcome_options, default = "Acute Myocardial Infarction"
+)
+lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"].isin(heat_outcome)]
 
 #create lag
 lag_values = range(-5,6)
@@ -270,7 +273,7 @@ for search_term in trend_options:
         # Apply the lag
         temp_df['lag_year'] = temp_df['Year'] - lag
         # Merge based on the lagged year
-        merged_df = pd.merge(temp_df, US_ave_mortality_df, left_on='lag_year', right_on='Year', how='inner')
+        merged_df = pd.merge(temp_df, lag_heat_mortality_df, left_on='lag_year', right_on='Year', how='inner')
         # Filter for the specific search_term
         search_term_df = merged_df[merged_df['Search_Term'] == search_term]
         # Calculate the correlation
