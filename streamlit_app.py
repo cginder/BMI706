@@ -242,7 +242,7 @@ chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
    y='cause_of_death:N',
    color='Correlation:Q'
 ).properties(
-    title="Correlation of Google Search Terms with Cause of Mortality"
+    title="Correlation of Google Search Terms with Cause of Mortality",
     width=550
 )
 
