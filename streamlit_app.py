@@ -196,14 +196,14 @@ chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
 )
 st.altair_chart(chart5,use_container_width=True)
 
-chart6 = alt.Chart(connected_scatter_df).mark_point().encode(
+chart6 = alt.Chart(connected_scatter_df).mark_line(points=True).encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     order="Year:O",
     color=alt.condition(
         'datum.Year < SelectorName',
         "State:N",
-        alt.value("grey")
+        alt.value("lite grey")
     ),
     tooltip=[
         alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
