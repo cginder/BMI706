@@ -95,7 +95,7 @@ trends = st.multiselect("Multiple Trend Selector (For Chart # 1)",
 
 #Trend Selector
 chart_3_trends = st.selectbox("Single Trend Selector (For Chart # 3)",
-    options = trend_options)#,default = "Cigarette")
+    options = trend_options)
 
 trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
@@ -108,7 +108,7 @@ trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trends) &
 #Outcome Selector
 outcome_options = subset["cause_of_death"].unique().tolist()
 outcomes = st.multiselect("Select Cause(s) of Death",
-    options = outcome_options, default = "acute_myocardial_infarction"
+    options = outcome_options, default = "Acute Myocardial Infarction"
 )
 subset = subset[subset["cause_of_death"].isin(outcomes)]
 
