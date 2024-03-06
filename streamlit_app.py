@@ -278,7 +278,6 @@ for search_term in trend_options:
     correlation_results[search_term] = correlations
 
 lag_points_df = pd.concat(lag_points,ignore_index=True)
-st.write(lag_points_df)
 
 # Now that we have our correlations calculated, let's turn this into a DataFrame
 lag_correlation_df = pd.DataFrame(correlation_results, index=lag_values)
@@ -288,6 +287,12 @@ lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name=
 
 # Give the 'index' column a more meaningful name
 lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
+
+
+
+st.write(lag_heatmap_df)
+st.write(lag_points_df)
+
 
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
@@ -310,7 +315,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    y='Search_Term:N',
    color= alt.condition(heat_selection,alt.Color('Correlation:Q'),alt.value('ligfhtgray'))
 ).properties(
-    title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
+    title={"text":"C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
            "subtitle":f"Selected outcome:{heat_outcome}"}, 
     width=550
 )
