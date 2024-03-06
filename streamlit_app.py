@@ -166,7 +166,7 @@ chart4 = alt.Chart(state_average_mortality_rate).mark_line(point=True).encode(
            "subtitle":f"Selected outcomes: {outcomes_title}"},
     width=550
 )
-st.altair_chart(chart4,use_container_width=True)
+str.altair_chart(chart4,use_container_width=True)
 
 #Connected Scatter Plots
 connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
@@ -175,15 +175,13 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='slider_year')
 select_year = alt.param(bind=slider,value=2013)
 
-st.write(select_year)
-
 chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     order="Year:O",
     color="State:N",
     opacity=alt.condition(
-        alt.datum.Year == select_year,
+        alt.datum.Year == 2013,
         alt.value(1),
         alt.value(0.05)
     ),
