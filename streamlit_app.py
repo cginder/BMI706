@@ -348,7 +348,7 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
 )
 
 regression_line = chart8.transform_regression(
-    'Annual_Avg_Trend_Value', 'Mortality_Rate', method="linear",params=True
+    'Annual_Avg_Trend_Value', 'Mortality_Rate', method="linear"
 ).mark_line(
     color='lightgrey', strokeDash=[5, 5]
 )
