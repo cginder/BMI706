@@ -193,7 +193,9 @@ chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     title={"text":"Connected Scatter Plot: Mortality by Search Trends",
            "subtitle":[f"Selected outcomes: {outcomes_title}",f"Selected search term: {chart_3_trend}"]},
     width=550
-).add_params(
+).chart.add_selection(
+    select_year
+).transform_filter(
     select_year
 )
 
