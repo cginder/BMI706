@@ -333,13 +333,6 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     heat_selection
 )
 
-'''
-chart8 = alt.Chart(lag_points_df).mark_point().encode(
-    x="Year_x:O",
-    y="Mortality_Rate:Q",
-    #color= ('Search_Term:N'),alt.value('lightgray'))
-)
-'''
 
 chart8 = alt.Chart(lag_points_df).transform_filter(
     heat_selection
