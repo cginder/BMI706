@@ -29,6 +29,8 @@ annual_avg_df.rename(columns={'Trend_Value': 'Annual_Avg_Trend_Value'}, inplace=
 merged_df = pd.merge(gtrend_state_df, annual_avg_df, on=['Year', 'Search_Term'], how='left')
 merged_df['Relative_Weighting'] = merged_df['Annual_Avg_Trend_Value'] * merged_df['Search_Term_Value']
 
+st.write(merged_df.head())
+
 #Convert Age Group Codes to Factors
 age_group_mapping = {
     '15-24': 1,
@@ -134,7 +136,7 @@ st.altair_chart(chart2,use_container_width=True)
 chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("Relative_Weighting:Q"),
-    color=alt.Color("Region",legend=alt.Legend(orient='right'))
+    color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
     title="Google Trends Over Time By State",
     width=550
