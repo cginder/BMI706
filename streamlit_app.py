@@ -112,7 +112,7 @@ subset = subset[subset["cause_of_death"].isin(outcomes)]
 
 
 #Convert Mortality to Rates After Final Filtering
-subset["Mortality_Rate"] = subset["Deaths"]/subset("Population") * 100_000
+subset["Mortality_Rate"] = subset["Deaths"]/subset["Population"] * 100_000
 
 #Different Google Trends Graph
 chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
