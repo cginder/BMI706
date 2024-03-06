@@ -176,7 +176,7 @@ connected_scatter_df['Year'] = pd.to_numeric(connected_scatter_df['Year'], error
 slider = alt.binding_range(min=2009, max=2014, step=1, name='slider_year')
 select_year = alt.param(bind=slider,value=2013)
 
-base_chart5 = alt.Chart(connected_scatter_df).encode(
+base_chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.condition(
@@ -192,13 +192,4 @@ base_chart5 = alt.Chart(connected_scatter_df).encode(
 ).add_params(
     select_year
 )
-
-line_chart5 = base_chart5.mark_line()
-point_chart5 = base_chart5.mark_point()
-chart5 = alt.layer(line_chart5,point_chart5).properties(
-    title={"text":"Connected Scatter Plot: Mortality by Search Trends",
-           "subtitle":[f"Selected outcomes: {outcomes_title}",f"Selected search term: {chart_3_trend}"]},
-    width=550
-)
-
 st.altair_chart(chart5,use_container_width=True)
