@@ -345,8 +345,8 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
     lag_heat_selection
 ).add_params(
     search_heat_selection
-).transform_regression('Annual_Avg_Trend_Value','Mortality_Rate').mark_line()
+)
 
-combined_chart = alt.vconcat(chart7,chart8)
+combined_chart = alt.vconcat(chart7,chart8+ chart8.transform_regression('Annual_Avg_Trend_Value','Mortality_Rate').mark_line())
 
 st.altair_chart(combined_chart,use_container_width=True)
