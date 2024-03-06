@@ -211,7 +211,7 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
                         alt.value("lightgrey")),
     detail="State:N"  # This ensures lines are drawn for each state separately
 ).transform_filter(
-    'datum.Year < SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
+    'datum.Year <= SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
 ).add_params(
     select_year
 ).add_selection(
