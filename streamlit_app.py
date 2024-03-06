@@ -312,7 +312,7 @@ st.altair_chart(chart10,use_container_width=True)
 st.write("Debug3")
 
 # Selector for Lag and Search Term
-heat_selection = alt.selection_interval(fields=['Lag', 'Search_Term'], clear='dblclick', toggle=True)
+heat_selection = alt.selection_interval()#fields=['Lag', 'Search_Term'], clear='dblclick', toggle=True)
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
