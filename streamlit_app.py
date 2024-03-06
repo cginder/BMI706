@@ -113,6 +113,8 @@ subset = subset[subset["cause_of_death"].isin(outcomes)]
 
 #Convert Mortality to Rates After Final Filtering
 subset["Mortality_Rate"] = subset["Deaths"]/subset["Population"] * 100_000
+cause_average_mortality_rate = subset.groupby(['cause_of_death','Year'])['Mortality_Rate'].mean().reset_index()
+state_average_mortality_rate = subset.groupby(['State','Year'])['Mortality_Rate'].mean().reset_index()
 
 #Different Google Trends Graph
 chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
@@ -128,7 +130,7 @@ st.altair_chart(chart,use_container_width=True)
 
 
 #Different Mortality Trends Over Time
-chart2 = alt.Chart(subset).mark_line(point=True).encode(
+chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
@@ -154,7 +156,7 @@ st.altair_chart(chart3,use_container_width=True)
 #Different Mortality Trends Over Time
 outcomes_title = ', '.join(outcomes)
 
-chart4 = alt.Chart(subset).mark_line(point=True).encode(
+chart4 = alt.Chart(state_average_mortality_rate).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
@@ -166,7 +168,7 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
 st.altair_chart(chart4,use_container_width=True)
 
 #Chart 5
-connected_scatter_df  = pd.merge(trend_subset_state_df,subset,on=['State','Year'],how='inner')
+connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
 chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
