@@ -291,7 +291,7 @@ lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
 # Selector for Lag and Search Term
 heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
-color = alt.condition(heat_selection,alt.Color('Correlation:Q',alt.value('ligfhtgray')))
+color = alt.condition(heat_selection,alt.Color('Correlation:Q'),alt.value('ligfhtgray'))
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
