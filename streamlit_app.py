@@ -181,8 +181,7 @@ chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.condition(
         alt.datum.Year < select_year,
-        alt.value('grey'),
-        'State'
+        alt.value('grey'),alt.value('blue')
     ),
     tooltip=[
         alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
