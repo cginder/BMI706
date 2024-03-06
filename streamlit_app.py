@@ -317,6 +317,7 @@ st.write("Debug3")
 #lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
 search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
 
+st.write(lag_points_df)
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
