@@ -357,66 +357,8 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
     lag_heat_selection
 ).add_params(
     search_heat_selection
-)
+).transform_regression('Annual_Avg_Trend_Value','Morality_Rate').mark_line()
 
 combined_chart = alt.vconcat(chart7,chart8)
 
 st.altair_chart(combined_chart,use_container_width=True)
-'''
-
-# Selector for Lag and Search Term
-lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
-search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
-
-
-chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
-    x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
-    y='Search_Term:N',
-    color='Correlation:Q',
-    opacity=alt.condition(
-        lag_heat_selection & search_heat_selection,
-        alt.value(1),  # This will apply for selected items
-        alt.value(0.5)  # This will apply for non-selected items, fixed typo here
-    )
-).properties(
-    title={
-        "text": "C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
-        "subtitle": f"Selected outcome: {heat_outcome}"
-    },
-    width=550
-).add_selection(
-    lag_heat_selection
-).add_selection(
-    search_heat_selection
-)
-
-
-chart8 = alt.Chart(lag_points_df).transform_filter(
-    search_heat_selection
-).mark_point().encode(
-    x="Year_y:O",
-    y="Mortality_Rate:Q",
-    color= alt.condition(lag_heat_selection & search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
-).properties(
-    width=550
-).add_params(
-    lag_heat_selection
-).add_params(
-    search_heat_selection
-)
-
-combined_chart = alt.vconcat(chart7,chart8)
-
-st.altair_chart(combined_chart,use_container_width=True)
-
-
-#st.altair_chart(chart7,use_container_width=True)
-
-'''
-
-
-#st.altair_chart(chart8,use_container_width=True)
-
-
-
-
