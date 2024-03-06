@@ -175,8 +175,6 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='slider_year')
 select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
 
-st.write(select_year)
-
 st.write(connected_scatter_df.head(30))
 chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
