@@ -178,7 +178,11 @@ select_year = alt.param(name="SliderName",value=connected_scatter_df['Year'].min
 chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-    color=alt.Color("State",legend=alt.Legend(orient='right')),
+    color=alt.condition(
+        alt.datum.Year < select_year.Year,
+        alt.value('Grey'),
+        'State'
+    )
     tooltip=[
         alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
         alt.Tooltip('State:N', title='State'),
