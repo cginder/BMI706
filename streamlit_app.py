@@ -314,7 +314,7 @@ st.write("Debug3")
 
 
 # Selector for Lag and Search Term
-#lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
+lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
 search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
 
 st.write(lag_points_df)
@@ -335,8 +335,8 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
         "subtitle": f"Selected outcome: {heat_outcome}"
     },
     width=550
-#).add_selection(
-#    lag_heat_selection
+).add_selection(
+    lag_heat_selection
 ).add_selection(
     search_heat_selection
 )
@@ -344,6 +344,8 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 
 chart8 = alt.Chart(lag_points_df).transform_filter(
     search_heat_selection
+).transform_filter(
+    lag_heat_selection
 ).mark_point().encode(
     x="Annual_Avg_Trend_Value",
     y="Mortality_Rate:Q",
@@ -351,8 +353,8 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
    # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
 ).properties(
     width=550
-#).add_params(
-#    lag_heat_selection
+).add_selection(
+    lag_heat_selection
 ).add_selection(
     search_heat_selection
 )
