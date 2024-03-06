@@ -280,14 +280,12 @@ for search_term in trend_options:
 
 # Create the DataFrame to display the table, convert to long
 lag_correlation_table_df = pd.DataFrame(correlation_results)
-
-st.write(lag_correlation_table_df.head(5))
-#lag_correlation_table_df.set_index('Lag', inplace=True)
-#lag_heatmap_df = 
+lag_heatmap_df = pd.melt(lag_correlation_table_df, id_vars=df.columns[0], var_name='Lag', value_name='Correlation')
 
 st.write(lag_correlation_table_df.head(30))
+st.write(lag_heatmap_df.head(30))
 
-chart7 = alt.Chart(lag_correlation_table_df).mark_rect().encode(
+chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
    y='Search_Term:N',
    color='Correlation:Q'
