@@ -206,12 +206,16 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
     x="Relative_Weighting:Q",
     y="Mortality_Rate:Q",
     order="Year:O",
-    color="State:N",
+    color=alt.Condition(state_selection,
+                        "State:N",
+                        alt.value("light grey"),
     detail="State:N"  # This ensures lines are drawn for each state separately
 ).transform_filter(
     'datum.Year < SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
 ).add_params(
     select_year
+).add_selection(
+    state_selection
 )
 
 chart5 = points + lines
