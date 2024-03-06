@@ -170,7 +170,6 @@ chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
     title={"text":"Connected Scatter Plot: Mortality by Search Trends",
-           "subtitle":f"Selected outcomes: {outcomes_title}"},
-           "subtitle":f"Selected search term: {chart_3_trend}"
+           "subtitle":[f"Selected outcomes: {outcomes_title}",f"Selected search term: {chart_3_trend}"]},
     width=550
 )
