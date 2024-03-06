@@ -95,7 +95,7 @@ trends = st.multiselect("Multiple Trend Selector (For Chart # 1)",
 
 #Trend Selector
 chart_3_trends = st.selectbox("Single Trend Selector (For Chart # 3)",
-    options = trend_options,default = "Cigarette")
+    options = trend_options)#,default = "Cigarette")
 
 trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
