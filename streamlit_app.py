@@ -150,12 +150,14 @@ chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
 st.altair_chart(chart3,use_container_width=True)
 
 #Different Mortality Trends Over Time
+outcomes_title = ', '.join(outcomes)
+
 chart4 = alt.Chart(subset).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("sum(Deaths):Q"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
-    title=f"{outcomes} Mortality Trends Over Time By State",
+    title=f"{outcomes_title} Mortality Trends Over Time By State",
     width=550
 )
 #st.write(subset.head())
