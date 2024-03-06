@@ -176,7 +176,7 @@ slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected
 select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
 
 st.write(connected_scatter_df.head(30))
-chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
+chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     order="Year:O",
