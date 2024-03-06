@@ -263,7 +263,7 @@ st.write(US_ave_mortality_df.head())
 
 st.write(heat_outcome)
 
-lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"].isin(heat_outcome)]
+lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"] == heat_outcome]
 
 st.write(lag_heat_mortality_df.head())
 
