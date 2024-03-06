@@ -325,7 +325,7 @@ chart8 = alt.Chart(lag_points_df).mark_point().encode(
     heat_selection
 )
 
-combined_chart = alt.vconcat(chart7, chart8)
+combined_chart = chart7 | chart8
 
 st.altair_chart(combined_chart,use_container_width=True)
 
