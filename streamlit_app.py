@@ -318,6 +318,8 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     title={"text":"C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
            "subtitle":f"Selected outcome:{heat_outcome}"}, 
     width=550
+).add_selection(
+    heat_selection
 )
 
 chart8 = alt.Chart(lag_points_df).mark_point().encode(
@@ -326,8 +328,6 @@ chart8 = alt.Chart(lag_points_df).mark_point().encode(
     color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('ligfhtgray'))
 ).add_params(
     heat_selection
-).transform_filter(
-    heat_selection 
 )
 
 #st.altair_chart(chart8,use_container_width=True)
