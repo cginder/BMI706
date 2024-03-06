@@ -291,6 +291,9 @@ lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 st.write(lag_heatmap_df)
 st.write(lag_points_df)
 
+st.write("Debug2")
+
+
 
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
