@@ -173,7 +173,7 @@ st.write(connected_scatter_df['Year'].min())
 st.write(connected_scatter_df['Year'].max())
 
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1,name='slider')
-select_year = alt.param(name="SliderName",value=connected_scatter_df['Year'].min(),bind=slider)
+select_year = alt.param(name="Year",value=connected_scatter_df['Year'].min(),bind=slider)
 
 chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
