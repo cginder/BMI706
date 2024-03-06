@@ -278,9 +278,12 @@ for search_term in trend_options:
         correlations.append(correlation)
     correlation_results[search_term] = correlations
 
-# Create the DataFrame to display the table
+# Create the DataFrame to display the table, convert to long
 lag_correlation_table_df = pd.DataFrame(correlation_results)
-lag_correlation_table_df.set_index('Lag', inplace=True)
+
+st.write(lag_correlation_table_df.head(5))
+#lag_correlation_table_df.set_index('Lag', inplace=True)
+#lag_heatmap_df = 
 
 st.write(lag_correlation_table_df.head(30))
 
