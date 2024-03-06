@@ -259,21 +259,30 @@ lag_slider = alt.binding_range(min=-5,max=5, step=1,name='Select year offset bet
 select_lag = alt.param(name="LagSelector",bind=lag_slider,value=0)
 
 #create lag
-lag_df = annual_avg_df
-lag_df['lag_year'] = lag_df['Year']-select_lag #### can't get this to work. Need to figure out how to pass along the slider selection; alternatively, we could do the small screens approach and hard code in a few lags.
-lag_heatmap_df  = pd.merge(lag_df,US_ave_mortality_df,left_on='lag_year',right_on='Year',how='inner')
+lag_values = range(-5,6)
+correlation_results = {'Lag':lag_values}
+
+for outcome in outcome_options:
+    correlations = []
+    for lag in lag_values:
+        # Create a copy to avoid modifying the original DataFrame
+        temp_df = annual_avg_df.copy()
+        # Apply the lag
+        temp_df['lag_year'] = temp_df['Year'] - lag
+        # Merge based on the lagged year
+        merged_df = pd.merge(temp_df, US_ave_mortality_df, left_on='lag_year', right_on='Year', how='inner')
+        # Filter for the specific outcome
+        outcome_df = merged_df[merged_df['cause_of_death'] == outcome]
+        # Calculate the correlation
+        correlation = calculate_correlation(outcome_df)
+        correlations.append(correlation)
+    correlation_results[outcome] = correlations
+
+# Create the DataFrame to display the table
+correlation_table_df = pd.DataFrame(correlation_results)
+correlation_table_df.set_index('Lag', inplace=True)
+
+# Display the correlation table
+st.write(correlation_table_df.head(50))
 
 
-lag_correlation_df = lag_heatmap_df.groupby(['Search_Term']).apply(calculate_correlation).reset_index(name='Correlation')
-
-chart6 = alt.Chart(lag_correlation_df).mark_rect().encode(
-   x='Search_Term:N',
-   y='cause_of_death:N',
-   color='Correlation:Q'
-).properties(
-    title="Correlation of Google Search Terms with Cause of Mortality",
-    width=550
-)
-
-
-#str.write(lag_df.head(30))
