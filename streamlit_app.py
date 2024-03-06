@@ -87,16 +87,20 @@ states = st.multiselect("State:",
 )
 subset = subset[subset["State"].isin(states)]
 
-#Trend Selector
+#Trend Selector -- TWO Different selectors, one for chart 1 and one for chart 2
 trend_options = gtrend_US_df["Search_Term"].unique().tolist()
 default_trend_values = ["Cigarette","Diet","Statin"]
-trends = st.multiselect("Search_Term",
+trends = st.multiselect("Multiple Trend Selector (For Chart # 1)",
     options = trend_options,default = default_trend_values)
+
+#Trend Selector
+chart_3_trends = st.select("Single Trend Selector (For Chart # 3)",
+    options = trend_options,default = "Cigarette")
 
 trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
 
-trend_subset_state_df = merged_df[merged_df["Search_Term"].isin(trends) &
+trend_subset_state_df = merged_df[merged_df["Search_Term"].isin(chart_3_trends) &
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
                         (merged_df['State'].isin(states))]
 
