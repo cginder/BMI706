@@ -312,15 +312,21 @@ st.altair_chart(chart10,use_container_width=True)
 st.write("Debug3")
 
 # Selector for Lag and Search Term
-heat_selection = alt.selection_point(fields=['Lag','Search_Term'],on='click',clear='dblclick', toggle='true')
+heat_selection = alt.selection_point(fields=['Lag', 'Search_Term'], on='click', clear='dblclick', toggle=True)
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
-   x='Lag',
-   y='Search_Term:N',
-   color= alt.condition(heat_selection,'Correlation:Q',alt.value('lightgray',legend=None))
+    x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
+    y='Search_Term:N',
+    color=alt.condition(
+        heat_selection,
+        'Correlation:Q',  # This will apply for selected items
+        alt.value('lightgray')  # This will apply for non-selected items, fixed typo here
+    )
 ).properties(
-    title={"text":"C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
-           "subtitle":f"Selected outcome:{heat_outcome}"}, 
+    title={
+        "text": "C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
+        "subtitle": f"Selected outcome: {heat_outcome}"
+    },
     width=550
 ).add_selection(
     heat_selection
