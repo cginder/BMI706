@@ -312,14 +312,16 @@ st.altair_chart(chart10,use_container_width=True)
 st.write("Debug3")
 
 # Selector for Lag and Search Term
-heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
+lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
+search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
+
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
     y='Search_Term:N',
     color='Correlation:Q',
     opacity=alt.condition(
-        heat_selection,
+        lag_heat_selection & search_heat_selection,
         alt.value(1),  # This will apply for selected items
         alt.value(0.5)  # This will apply for non-selected items, fixed typo here
     )
@@ -330,7 +332,9 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     },
     width=550
 ).add_selection(
-    heat_selection
+    lag_heat_selection
+).add_selection(
+    search_heat_selection
 )
 
 
