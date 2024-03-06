@@ -181,7 +181,7 @@ chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
     order="Year:O",
     color="State:N",
     opacity=alt.condition(
-        alt.datum.Year == 2013,
+        alt.datum.Year == "2013",
         alt.value(1),
         alt.value(0.05)
     ),
