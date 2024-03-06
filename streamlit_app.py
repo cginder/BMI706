@@ -256,7 +256,7 @@ lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"
 #create lag
 lag_values = range(-5,6)
 correlation_results = {}
-lag_df_points = {}
+lag_df_points = pd.DataFrame()
 
 for search_term in trend_options:
     correlations = []
@@ -274,7 +274,7 @@ for search_term in trend_options:
         correlation = calculate_correlation(search_term_df)
         correlations.append(correlation)
         # Append Data points
-        lag_df_points.append(search_term_df)
+        lag_df_points.pd.concat(search_term_df)
     correlation_results[search_term] = correlations
 
 st.write(lag_df_points)
