@@ -158,9 +158,8 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
     title={"text":"Mortality Trends Over Time By State",
-           "subtitle":"Test"},
+           "subtitle":f"Selected outcomes: {outcomes_title}"},
     width=550
 )
 #st.write(subset.head())
 st.altair_chart(chart4,use_container_width=True)
-st.markdown(f"Selected outcomes: {outcomes_title}")
