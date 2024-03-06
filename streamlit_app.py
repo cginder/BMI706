@@ -225,13 +225,14 @@ st.altair_chart(chart5,use_container_width=True)
 
 ### Heatmap
 US_ave_mortality_df = mortality_df.groupby(['Year','cause_of_death'])[['Deaths','Population']].sum().reset_index()
-
-
-
-st.write(US_ave_mortality_df.head(30))
-
 US_ave_mortality_df['Mortality_Rate'] = US_ave_mortality_df["Deaths"]/US_ave_mortality_df["Population"] * 100_000
-st.write(US_ave_mortality_df.head(30))
-
 heatmap_df  = pd.merge(annual_avg_df,US_ave_mortality_df,on='Year',how='inner')
-st.write(heatmap_df.head(30))
+
+# Function to calculate Pearson correlation for a group
+def calculate_correlation(group):
+    return group['Annual_Avg_Trend_Value'].corr(group['Mortality_Rate'])
+
+# Group by 'cause_of_death' and apply the correlation calculation function
+correlation_by_cause = heatmap_df.groupby('cause_of_death').apply(calculate_correlation)
+
+st.write(correlation_by_cause.head())
