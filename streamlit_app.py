@@ -94,7 +94,7 @@ trends = st.multiselect("Multiple Trend Selector (For Chart # 1)",
     options = trend_options,default = default_trend_values)
 
 #Trend Selector
-chart_3_trends = st.select("Single Trend Selector (For Chart # 3)",
+chart_3_trends = st.selectbox("Single Trend Selector (For Chart # 3)",
     options = trend_options,default = "Cigarette")
 
 trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
