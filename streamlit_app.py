@@ -174,13 +174,17 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 # Creating a slider for the years & selector with legend
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='Select Year: ')
 select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
-
+state_selection = alt.selection_single(
+    fields=["State"],bind='legend',name='SelectState'
+)
 
 points = alt.Chart(connected_scatter_df).mark_point().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     order="Year:O",
-    color="State:N",
+    color=alt.condition(state_selection,
+                        alt.value("Black"),
+                        alt.value("White")),
     opacity=alt.condition(
         'datum.Year < SelectorName',
         alt.value(1),
@@ -194,6 +198,8 @@ points = alt.Chart(connected_scatter_df).mark_point().encode(
     ]
 ).add_params(
     select_year
+).add_selection(
+    state_selection
 )
 
 lines = alt.Chart(connected_scatter_df).mark_line().encode(
