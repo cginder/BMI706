@@ -340,6 +340,8 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
     x="Year_y:O",
     y="Mortality_Rate:Q",
     color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
+).properties(
+    width=550
 ).add_params(
     heat_selection
 )
