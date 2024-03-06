@@ -271,10 +271,10 @@ for search_term in trend_options:
         temp_df['lag_year'] = temp_df['Year'] - lag
         # Merge based on the lagged year
         merged_df = pd.merge(temp_df, US_ave_mortality_df, left_on='lag_year', right_on='Year', how='inner')
-        # Filter for the specific outcome
-        outcome_df = merged_df[merged_df['Search_Term'] == search_term]
+        # Filter for the specific search_term
+        search_term_df = merged_df[merged_df['Search_Term'] == search_term]
         # Calculate the correlation
-        correlation = calculate_correlation(outcome_df)
+        correlation = calculate_correlation(search_term_df)
         correlations.append(correlation)
     correlation_results[search_term] = correlations
 
@@ -291,6 +291,4 @@ chart7 = alt.Chart(lag_correlation_table_df).mark_rect().encode(
     title="Correlation of Google Search Terms with Cause of Mortality",
     width=550
 )
-
-
-#str.write(lag_df.head(30))
+st.altair_chart(chart7,use_container_width=True)
