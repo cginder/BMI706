@@ -171,9 +171,13 @@ st.altair_chart(chart4,use_container_width=True)
 #Connected Scatter Plots
 connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
 
-# Creating a slider for the years
-slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='slider_year')
+# Creating a slider for the years & selector with legend
+slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='Select Year: ')
 select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
+
+state_selection = alt.selection_single(
+    fields=["State"],bind='legend',name='SelectState'
+)
 
 points = alt.Chart(connected_scatter_df).mark_point().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
@@ -181,7 +185,7 @@ points = alt.Chart(connected_scatter_df).mark_point().encode(
     order="Year:O",
     color="State:N",
     opacity=alt.condition(
-        'datum.Year < SelectorName',
+        alt.datum.Year < select_year,
         alt.value(1),
         alt.value(0.25)
     ),
@@ -205,29 +209,11 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
     'datum.Year < SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
 ).add_params(
     select_year
+).add_selection(
+    state_selection
 )
 
 chart5 = points + lines
 
 
 st.altair_chart(chart5,use_container_width=True)
-
-chart6 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
-    x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
-    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-    order="Year:O",
-    color=alt.condition(
-        'datum.Year < SelectorName',
-        "State:N",
-        alt.value("lite grey")
-    ),
-    tooltip=[
-        alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
-        alt.Tooltip('State:N', title='State'),
-        alt.Tooltip('Relative_Weighting:Q', title='Relative Weighting'),
-        alt.Tooltip('Year:O', title='Year') 
-    ]
-).add_params(
-    select_year
-)
-st.altair_chart(chart6,use_container_width=True)
