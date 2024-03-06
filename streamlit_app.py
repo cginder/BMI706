@@ -100,7 +100,7 @@ chart_3_trends = st.selectbox("Single Trend Selector (For Chart # 3)",
 trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
 
-trend_subset_state_df = merged_df[merged_df["Search_Term"] == chart_3_trends &
+trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trends) &
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
                         (merged_df['State'].isin(states))]
 
