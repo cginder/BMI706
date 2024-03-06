@@ -169,9 +169,10 @@ st.altair_chart(chart4,use_container_width=True)
 
 #Connected Scatter Plots
 connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
+
 st.write(connected_scatter_df['Year'].min())
 st.write(connected_scatter_df['Year'].max())
-
+st.write(type(connect_scatter_df['Year']))
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1,name='slider')
 select_year = alt.selection_single(name="select_year",fields=['Year'],init={'Year':connected_scatter_df['Year'].min()},bind=slider)
 
