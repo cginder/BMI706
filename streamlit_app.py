@@ -194,7 +194,7 @@ chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
 ).add_params(
     select_year
 )
-st.altair_chart(chart5,use_container_width=True)'
+st.altair_chart(chart5,use_container_width=True)
 
 chart6 = alt.Chart(connected_scatter_df).mark_point().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
