@@ -30,8 +30,6 @@ merged_df = pd.merge(gtrend_state_df, annual_avg_df, on=['Year', 'Search_Term'],
 merged_df['Relative_Weighting'] = merged_df['Annual_Avg_Trend_Value'] * merged_df['Search_Term_Value'] / 100
 merged_df.rename(columns={'Region':'State'},inplace=True)
 
-st.write(merged_df.head())
-
 #Convert Age Group Codes to Factors
 age_group_mapping = {
     '15-24': 1,
@@ -163,3 +161,16 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
 )
 #st.write(subset.head())
 st.altair_chart(chart4,use_container_width=True)
+
+#Chart 5
+connected_scatter_df  = pd.merge(trend_subset_state_df,subset,on=['State','Year'],how='inner')
+chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
+    x=alt.X("Relative_Weighting:Q"),
+    y=alt.Y("sum(Deaths):Q"),
+    color=alt.Color("State",legend=alt.Legend(orient='right'))
+).properties(
+    title={"text":"Connected Scatter Plot: Mortality by Search Trends",
+           "subtitle":f"Selected outcomes: {outcomes_title}"},
+           "subtitle":f"Selected search term: {chart_3_trend}"
+    width=550
+)
