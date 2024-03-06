@@ -272,7 +272,7 @@ for search_term in trend_options:
         # Merge based on the lagged year
         merged_df = pd.merge(temp_df, US_ave_mortality_df, left_on='lag_year', right_on='Year', how='inner')
         # Filter for the specific outcome
-        outcome_df = merged_df[merged_df['Search_Term '] == search_term]
+        outcome_df = merged_df[merged_df['Search_Term'] == search_term]
         # Calculate the correlation
         correlation = calculate_correlation(outcome_df)
         correlations.append(correlation)
