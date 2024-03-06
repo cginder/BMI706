@@ -331,9 +331,9 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
         "subtitle": f"Selected outcome: {heat_outcome}"
     },
     width=550
-).add_selection(
+).add_params(
     lag_heat_selection
-).add_selection(
+).add_params(
     search_heat_selection
 )
 
