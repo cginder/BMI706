@@ -260,7 +260,7 @@ select_lag = alt.param(name="LagSelector",bind=lag_slider,value=0)
 
 #create lag
 lag_values = range(-5,6)
-correlation_results = {'Lag':lag_values}
+correlation_results = {}
 
 for search_term in trend_options:
     correlations = []
