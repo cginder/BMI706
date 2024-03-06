@@ -248,12 +248,6 @@ st.altair_chart(chart6,use_container_width=True)
 
 
 ### Lagging Heatmap
-#Drop-down selector for outcome
-#outcome_dropdown = alt.binding_select(options=outcome_options)
-#outcome_select = alt.selection_single(
-#   fields=['cause_of_death'],bind=outcome_dropdown,name="OutcomeSelector",init={'cause_of_death': outcome_options[0]}
-#)
-
 heat_outcome = st.selectbox("Select Cause of Death",
     options = outcome_options)
 
@@ -262,6 +256,7 @@ lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"
 #create lag
 lag_values = range(-5,6)
 correlation_results = {}
+lag_df_points = {}
 
 for search_term in trend_options:
     correlations = []
@@ -274,10 +269,15 @@ for search_term in trend_options:
         merged_df = pd.merge(temp_df, lag_heat_mortality_df, left_on='lag_year', right_on='Year', how='inner')
         # Filter for the specific search_term
         search_term_df = merged_df[merged_df['Search_Term'] == search_term]
+        search_term_df['Lag_Value'] = lag
         # Calculate the correlation
         correlation = calculate_correlation(search_term_df)
         correlations.append(correlation)
+        # Append Data points
+        lag_df_points.append(search_term_df)
     correlation_results[search_term] = correlations
+
+st.write(lag_df_points)
 
 # Now that we have our correlations calculated, let's turn this into a DataFrame
 lag_correlation_df = pd.DataFrame(correlation_results, index=lag_values)
