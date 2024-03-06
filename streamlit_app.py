@@ -317,10 +317,11 @@ heat_selection = alt.selection_interval()#fields=['Lag', 'Search_Term'], clear='
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
     y='Search_Term:N',
-    color=alt.condition(
+    color='Correlation:Q',
+    opacity=alt.condition(
         heat_selection,
-        'Correlation:Q',  # This will apply for selected items
-        alt.value('lightgray')  # This will apply for non-selected items, fixed typo here
+        alt.value(1),  # This will apply for selected items
+        alt.value(0.5)  # This will apply for non-selected items, fixed typo here
     )
 ).properties(
     title={
