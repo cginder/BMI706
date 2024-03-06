@@ -98,7 +98,7 @@ outcomes = st.multiselect("Select Cause(s) of Death",
 subset = subset[subset["cause_of_death"].isin(outcomes)]
 
 #Test Plot 1
-chart = alt.Chart(trend_subset).mark_line().encode(
+chart = alt.Chart(trend_subset).mark_line(point=True).encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("Annual_Avg_Trend_Value"),
     color="Search_Term"
@@ -108,7 +108,7 @@ st.altair_chart(chart,use_container_width=True)
 
 
 #Test Plot 2
-chart2 = alt.Chart(subset).mark_line().encode(
+chart2 = alt.Chart(subset).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("sum(Deaths):Q"),
     color="cause_of_death"
