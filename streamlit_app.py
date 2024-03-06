@@ -173,7 +173,7 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 
 # Creating a slider for the years
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='slider_year')
-select_year = alt.param(bind=slider,value=connected_scatter_df['Year'].min())
+select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
 
 st.write(select_year)
 
@@ -184,7 +184,7 @@ chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
     order="Year:O",
     color="State:N",
     opacity=alt.condition(
-        'datum.Year < select_year',
+        'datum.Year < SelectorName',
         alt.value(1),
         alt.value(0.05)
     ),
