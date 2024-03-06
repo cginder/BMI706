@@ -259,13 +259,7 @@ st.altair_chart(chart6,use_container_width=True)
 heat_outcome = st.selectbox("Select Cause of Death",
     options = outcome_options)
 
-st.write(US_ave_mortality_df.head())
-
-st.write(heat_outcome)
-
 lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"] == heat_outcome]
-
-st.write(lag_heat_mortality_df.head())
 
 #create lag
 lag_values = range(-5,6)
@@ -306,7 +300,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    color='Correlation:Q'
 ).properties(
     title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
-           "subtitle":f"Selected outcome:"}, 
+           "subtitle":f"Selected outcome:{heat_outcome}"}, 
     width=550
 )
 st.altair_chart(chart7,use_container_width=True)
