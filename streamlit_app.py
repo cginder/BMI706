@@ -313,7 +313,7 @@ st.write("Debug3")
 
 # Selector for Lag and Search Term
 lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
-search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True,name='SelectSeachHeat')
+search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=trend_subset_US_df)
 
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
@@ -338,11 +338,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 )
 
 
-chart8 = alt.Chart(lag_points_df).transform_filter(
-    lag_heat_selection
-).transform_filter(
-    'datum.Search_Term == SelectSearchHeat'
-).mark_point().encode(
+chart8 = alt.Chart(lag_points_df).mark_point().encode(
     x="Year_y:O",
     y="Mortality_Rate:Q",
     color= alt.condition(lag_heat_selection & search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
@@ -350,7 +346,7 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
     width=550
 ).add_params(
     lag_heat_selection
-).add_params(
+).transform_filter(
     search_heat_selection
 )
 
