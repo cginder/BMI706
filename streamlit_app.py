@@ -185,7 +185,7 @@ points = alt.Chart(connected_scatter_df).mark_point().encode(
     order="Year:O",
     color="State:N",
     opacity=alt.condition(
-        (alt.datum.Year < select_year),
+        'datum.Year < SelectorName',
         alt.value(1),
         alt.value(0.25)
     ),
