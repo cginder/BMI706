@@ -294,7 +294,9 @@ st.write(lag_points_df)
 st.write("Debug2")
 
 
+'''
 
+}
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
    y='Search_Term:N',
@@ -342,3 +344,4 @@ combined_chart = alt.vconcat(chart7,chart8)
 st.altair_chart(combined_chart,use_container_width=True)
 
 
+'''
