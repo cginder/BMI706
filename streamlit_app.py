@@ -345,7 +345,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 chart8 = alt.Chart(lag_points_df).transform_filter(
     search_heat_selection
 ).mark_point().encode(
-    x="Year_y:O",
+    x="Annual_Avg_Trend_Value",
     y="Mortality_Rate:Q",
     color='Search_Term:N'
    # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
