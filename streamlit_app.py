@@ -88,7 +88,8 @@ default_trend_values = ["Cigarette","Diet","Statin"]
 trends = st.multiselect("Search_Term",
     options = trend_options,default = default_trend_values)
 
-trend_subset = merged_df[merged_df["Search_Term"].isin(trends)]
+trend_subset = merged_df[merged_df["Search_Term"].isin(trends) & 
+                        (merged_df[(merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
 
 #Outcome Selector
 outcome_options = subset["cause_of_death"].unique().tolist()
