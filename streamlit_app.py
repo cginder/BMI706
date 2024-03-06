@@ -69,7 +69,8 @@ subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) &
 #Race Selectors
 race_options = subset["Race"].unique().tolist()
 race = st.multiselect("Select Races:",
-    options = race_options
+    options = race_options,
+    default=race_options
 )
 subset = subset[subset["Race"].isin(race)]
 
@@ -92,7 +93,7 @@ trend_subset = merged_df[merged_df["Search_Term"].isin(trends)]
 #Outcome Selector
 outcome_options = subset["cause_of_death"].unique().tolist()
 outcomes = st.multiselect("Select Cause(s) of Death",
-    options = outcome_options
+    options = outcome_options, default = "acute_myocardial_infarction"
 )
 subset = subset[subset["cause_of_death"].isin(outcomes)]
 
@@ -107,7 +108,7 @@ st.altair_chart(chart,use_container_width=True)
 
 
 #Test Plot 2
-chart2 = alt.Chart(subset).mark_point().encode(
+chart2 = alt.Chart(subset).mark_line().encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("sum(Deaths):Q"),
     color="cause_of_death"
