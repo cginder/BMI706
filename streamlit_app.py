@@ -224,7 +224,7 @@ st.altair_chart(chart5,use_container_width=True)
 
 
 ### Heatmap
-US_ave_mortality_df = mortality_df.groupby(['Year','cause_of_death'])['Deaths','Population'].sum()
+US_ave_mortality_df = mortality_df.groupby(['Year','cause_of_death'])[['Deaths','Population']].sum()
 US_ave_mortality_df['Mortality_Rate'] = US_ave_mortality_df["Deaths"]/US_ave_mortality_df["Population"] * 100_000
 
 heatmap_df  = pd.merge(annual_avg_df,US_ave_mortality_df,on='Year',how='inner')
