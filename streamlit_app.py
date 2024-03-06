@@ -317,7 +317,7 @@ heat_selection = alt.selection_point(fields=['Lag','Search_Term'],on='click',cle
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag',
    y='Search_Term:N',
-   color= alt.condition(heat_selection,'Correlation:Q',alt.value('ligfhtgray',legend=None))
+   color= alt.condition(heat_selection,'Correlation:Q',alt.value('lightgray',legend=None))
 ).properties(
     title={"text":"C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
            "subtitle":f"Selected outcome:{heat_outcome}"}, 
