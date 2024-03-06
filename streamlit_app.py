@@ -51,7 +51,7 @@ subset = mortality_df
 
 #Year Range Selector
 year_range = st.slider('Years:',
-        2004,2019,(2007,2009))
+        2004,2019,(2007,2014))
 subset = subset[(subset['Year'] >= year_range[0]) & (subset['Year'] <= year_range[1])]
 
 #Sex Selector
@@ -94,13 +94,13 @@ trends = st.multiselect("Multiple Trend Selector (For Chart # 1)",
     options = trend_options,default = default_trend_values)
 
 #Trend Selector
-chart_3_trends = st.selectbox("Single Trend Selector (For Chart # 3)",
+chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
     options = trend_options)
 
 trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
 
-trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trends) &
+trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
                         (merged_df['State'].isin(states))]
 
@@ -118,7 +118,7 @@ chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
     y=alt.Y("Annual_Avg_Trend_Value"),
     color=alt.Color("Search_Term",legend=alt.Legend(orient='right'))
 ).properties(
-    title="Google Trends Over Time",
+    title="ROBABLY DISCARD: Google Trends Over Time",
     width=550
 )
 
@@ -131,7 +131,7 @@ chart2 = alt.Chart(subset).mark_line(point=True).encode(
     y=alt.Y("sum(Deaths):Q"),
     color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
 ).properties(
-    title="Mortality Trends Over Time",
+    title="PROBABLY DISCARD: Mortality Trends Over Time",
     width=550
 )
 #st.write(subset.head())
@@ -143,7 +143,7 @@ chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
     y=alt.Y("Relative_Weighting:Q"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
-    title="Google Trends Over Time By State",
+    title=f"Google Searches for {chart_3_trend} Over Time By State",
     width=550
 )
 #st.write(subset.head())
@@ -155,7 +155,7 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
     y=alt.Y("sum(Deaths):Q"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
-    title="Mortality Trends Over Time By State",
+    title=f"{cause_of_death} Mortality Trends Over Time By State",
     width=550
 )
 #st.write(subset.head())
