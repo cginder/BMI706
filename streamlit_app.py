@@ -179,6 +179,7 @@ select_year = alt.param(bind=slider,value=2013)
 chart5 = alt.Chart(connected_scatter_df).mark_line().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
+    order="Year:O"
     color=alt.condition(
         alt.datum.Year < select_year,
         alt.value('grey'),alt.value("blue")
