@@ -157,8 +157,15 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
     y=alt.Y("sum(Deaths):Q"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
-    title=f"{outcomes_title} Mortality Trends Over Time By State",
+    title=f"Mortality Trends Over Time By State\n{outcomes_title}",
     width=550
+).configure_title(
+    fontSize=20,
+    anchor='start'
+).configure_subtitle(
+    fontSize=15,
+    anchor='start'
 )
+
 #st.write(subset.head())
 st.altair_chart(chart4,use_container_width=True)
