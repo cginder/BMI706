@@ -285,7 +285,7 @@ lag_correlation_table_df.set_index('Lag', inplace=True)
 
 chart7 = alt.Chart(lag_correlation_table_df).mark_rect().encode(
    x='Lag:O',
-   y='search_term:N',
+   y='Search_Term:N',
    color='Correlation:Q'
 ).properties(
     title="Correlation of Google Search Terms with Cause of Mortality",
