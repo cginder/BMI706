@@ -107,7 +107,7 @@ chart = alt.Chart(trend_subset).mark_line(point=True).encode(
     width=550
 )
 
-st.altair_chart(chart)#,use_container_width=True)
+st.altair_chart(chart,use_container_width=True)
 
 
 #Test Plot 2
@@ -119,4 +119,4 @@ chart2 = alt.Chart(subset).mark_line(point=True).encode(
     width=550
 )
 #st.write(subset.head())
-st.altair_chart(chart2)#,use_container_width=True)
+st.altair_chart(chart2,use_container_width=True)
