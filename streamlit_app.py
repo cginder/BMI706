@@ -279,10 +279,18 @@ for outcome in outcome_options:
     correlation_results[outcome] = correlations
 
 # Create the DataFrame to display the table
-correlation_table_df = pd.DataFrame(correlation_results)
-correlation_table_df.set_index('Lag', inplace=True)
-
-# Display the correlation table
-st.write(correlation_table_df.head(50))
+lag_correlation_table_df = pd.DataFrame(correlation_results)
+lag_correlation_table_df.set_index('Lag', inplace=True)
 
 
+chart7 = alt.Chart(lag_correlation_df).mark_rect().encode(
+   x='Lag:O',
+   y='cause_of_death:N',
+   color='Correlation:Q'
+).properties(
+    title="Correlation of Google Search Terms with Cause of Mortality",
+    width=550
+)
+
+
+#str.write(lag_df.head(30))
