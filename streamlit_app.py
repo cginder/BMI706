@@ -324,7 +324,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     y='Search_Term:N',
     color='Correlation:Q',
     opacity=alt.condition(
-        #lag_heat_selection & 
+        lag_heat_selection & 
         search_heat_selection,
         alt.value(1),  # This will apply for selected items
         alt.value(0.5)  # This will apply for non-selected items, fixed typo here
