@@ -271,7 +271,7 @@ for search_term in trend_options:
         # Create a copy to avoid modifying the original DataFrame
         temp_df = annual_avg_df.copy()
         # Apply the lag
-        temp_df['lag_year'] = temp_df['Year'] - lag
+        temp_df['lag_year'] = temp_df['Year'] + lag
         # Merge based on the lagged year
         merged_df = pd.merge(temp_df, lag_heat_mortality_df, left_on='lag_year', right_on='Year', how='inner')
         # Filter for the specific search_term
