@@ -220,5 +220,9 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
 
 chart5 = points + lines
 
-
 st.altair_chart(chart5,use_container_width=True)
+
+
+### Heatmap
+heatmap_df  = pd.merge(annual_avg_df,mortality_df,on='Year',how='inner')
+st.write(heatmap_df.head(30))
