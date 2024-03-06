@@ -235,8 +235,6 @@ def calculate_correlation(group):
 # Group by 'cause_of_death' and apply the correlation calculation function
 correlation_by_cause = heatmap_df.groupby(['Search_Term','cause_of_death']).apply(calculate_correlation).reset_index(name='Correlation')
 
-st.write(correlation_by_cause.head())
-
 chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
     x='Search_Term:N',
    y='cause_of_death:N',
@@ -290,9 +288,6 @@ lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name=
 # Give the 'index' column a more meaningful name
 lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
-
-st.write(lag_correlation_df.head(30))
-st.write(lag_heatmap_df.head(30))
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
