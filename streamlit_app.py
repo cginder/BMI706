@@ -269,7 +269,7 @@ for search_term in trend_options:
         merged_df = pd.merge(temp_df, lag_heat_mortality_df, left_on='lag_year', right_on='Year', how='inner')
         # Filter for the specific search_term
         search_term_df = merged_df[merged_df['Search_Term'] == search_term]
-        search_term_df['Lag_Value'] = lag
+        search_term_df['Lag'] = lag
         # Calculate the correlation
         correlation = calculate_correlation(search_term_df)
         correlations.append(correlation)
