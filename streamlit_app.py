@@ -233,6 +233,6 @@ def calculate_correlation(group):
     return group['Annual_Avg_Trend_Value'].corr(group['Mortality_Rate'])
 
 # Group by 'cause_of_death' and apply the correlation calculation function
-correlation_by_cause = heatmap_df.groupby('cause_of_death').apply(calculate_correlation)
+correlation_by_cause = heatmap_df.groupby(['Search_Term','cause_of_death']).apply(calculate_correlation)
 
 st.write(correlation_by_cause.head())
