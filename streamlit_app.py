@@ -259,7 +259,11 @@ st.altair_chart(chart6,use_container_width=True)
 heat_outcome = st.selectbox("Select Cause of Death",
     options = outcome_options)
 
+st.write(US_ave_mortality_df.head())
+
 lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"].isin(heat_outcome)]
+
+st.write(US_ave_mortality_df.head())
 
 #create lag
 lag_values = range(-5,6)
