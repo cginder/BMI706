@@ -308,7 +308,7 @@ st.altair_chart(chart10,use_container_width=True)
 
 
 # Selector for Lag and Search Term
-#heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
+heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag',
@@ -322,13 +322,13 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 
 chart8 = alt.Chart(lag_points_df).mark_point().encode(
     x="Year_x",
-    y="Morality_Rate:Q"#,
-    #color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('ligfhtgray'))
-)#.add_params(
-#    heat_selection
-#).transform_filter(
-#    heat_selection 
-#)
+    y="Morality_Rate:Q",
+    color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('ligfhtgray'))
+).add_params(
+    heat_selection
+).transform_filter(
+    heat_selection 
+)
 
 #st.altair_chart(chart8,use_container_width=True)
 
