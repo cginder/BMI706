@@ -102,7 +102,7 @@ subset = subset[subset["cause_of_death"].isin(outcomes)]
 chart = alt.Chart(trend_subset).mark_line(point=True).encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("Annual_Avg_Trend_Value"),
-    color="Search_Term"
+    color=alt.Color("Search_Term",legend=alt.Legend(orient='right')
 ).properties(
     width=550
 )
@@ -114,7 +114,7 @@ st.altair_chart(chart,use_container_width=True)
 chart2 = alt.Chart(subset).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("sum(Deaths):Q"),
-    color="cause_of_death"
+    color=alt.Color("cause_of_death",legend=alt.Legend(orient='right')
 ).properties(
     width=550
 )
