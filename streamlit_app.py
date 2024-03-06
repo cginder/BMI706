@@ -175,7 +175,6 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='slider_year')
 select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
 
-st.write(connected_scatter_df.head(30))
 chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
@@ -184,7 +183,7 @@ chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
     opacity=alt.condition(
         'datum.Year < SelectorName',
         alt.value(1),
-        alt.value(0.05)
+        alt.value(0.25)
     ),
     tooltip=[
         alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
@@ -195,4 +194,24 @@ chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
 ).add_params(
     select_year
 )
-st.altair_chart(chart5,use_container_width=True)
+st.altair_chart(chart5,use_container_width=True)'
+
+chart6 = alt.Chart(connected_scatter_df).mark_point().encode(
+    x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
+    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
+    order="Year:O",
+    color=alt.condition(
+        'datum.Year < SelectorName',
+        "State:N",
+        alt.value("grey")
+    ),
+    tooltip=[
+        alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
+        alt.Tooltip('State:N', title='State'),
+        alt.Tooltip('Relative_Weighting:Q', title='Relative Weighting'),
+        alt.Tooltip('Year:O', title='Year') 
+    ]
+).add_params(
+    select_year
+)
+st.altair_chart(chart6,use_container_width=True)'
