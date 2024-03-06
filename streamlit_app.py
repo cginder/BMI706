@@ -288,6 +288,7 @@ lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name=
 # Give the 'index' column a more meaningful name
 lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
+'''
 st.write(lag_heatmap_df)
 st.write("Debug1")
 
@@ -296,7 +297,6 @@ st.write(lag_points_df.head())
 st.write("Debug2")
 
 
-'''
 
 }
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
