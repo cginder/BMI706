@@ -155,7 +155,7 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
     y=alt.Y("sum(Deaths):Q"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
-    title=f"{cause_of_death} Mortality Trends Over Time By State",
+    title=f"{outcomes} Mortality Trends Over Time By State",
     width=550
 )
 #st.write(subset.head())
