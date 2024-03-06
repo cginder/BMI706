@@ -326,7 +326,7 @@ chart8 = alt.Chart(lag_points_df).mark_point().encode(
 st.altair_chart(chart8,use_container_width=True)
 
 
-combined_chart = chart7 | chart8
+combined_chart = chart8 | chart7
 
 st.altair_chart(combined_chart,use_container_width=True)
 
