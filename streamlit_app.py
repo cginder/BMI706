@@ -182,9 +182,9 @@ points = alt.Chart(connected_scatter_df).mark_point().encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     order="Year:O",
-    color=alt.condition(state_selection,
+    color=alt.Color(alt.condition(state_selection,
                         "State:N",
-                        alt.value("White")),
+                        alt.value("Grey")),title="Select State:",
     opacity=alt.condition(
         'datum.Year < SelectorName',
         alt.value(1),
