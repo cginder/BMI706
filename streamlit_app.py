@@ -110,6 +110,10 @@ outcomes = st.multiselect("Select Cause(s) of Death",
 )
 subset = subset[subset["cause_of_death"].isin(outcomes)]
 
+
+#Convert Mortality to Rates After Final Filtering
+subset["Mortality_Rate"] = subset["Deaths"]/subset("Population") * 100_000
+
 #Different Google Trends Graph
 chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
@@ -126,7 +130,7 @@ st.altair_chart(chart,use_container_width=True)
 #Different Mortality Trends Over Time
 chart2 = alt.Chart(subset).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("sum(Deaths):Q"),
+    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
 ).properties(
     title="PROBABLY DISCARD: Mortality Trends Over Time",
@@ -152,7 +156,7 @@ outcomes_title = ', '.join(outcomes)
 
 chart4 = alt.Chart(subset).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("sum(Deaths):Q"),
+    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
     title={"text":"Mortality Trends Over Time By State",
@@ -165,7 +169,7 @@ st.altair_chart(chart4,use_container_width=True)
 connected_scatter_df  = pd.merge(trend_subset_state_df,subset,on=['State','Year'],how='inner')
 chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q"),
-    y=alt.Y("sum(Deaths):Q"),
+    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
     title={"text":"Connected Scatter Plot: Mortality by Search Trends",
