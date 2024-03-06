@@ -237,8 +237,10 @@ correlation_by_cause = heatmap_df.groupby(['Search_Term','cause_of_death']).appl
 
 st.write(correlation_by_cause.head())
 
-#chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
-#    x='Search_Term:N',
- #   y='cause_of_death:N',
- #   color='Mortality_'
-#)
+chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
+    x='Search_Term:N',
+   y='cause_of_death:N',
+   color='Correlation:Q'
+)
+
+st.altair_chart(chart6,use_container_width=True)
