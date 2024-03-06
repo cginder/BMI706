@@ -198,6 +198,7 @@ points = alt.Chart(connected_scatter_df).mark_point().encode(
 lines = alt.Chart(connected_scatter_df).mark_line().encode(
     x="Relative_Weighting:Q",
     y="Mortality_Rate:Q",
+    order="Year:O",
     color="State:N",
     detail="State:N"  # This ensures lines are drawn for each state separately
 ).transform_filter(
