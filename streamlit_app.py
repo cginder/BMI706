@@ -295,10 +295,7 @@ st.write("Debug1")
 st.write(lag_points_df.head())
 
 st.write("Debug2")
-'''
 
-
-}
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
    y='Search_Term:N',
@@ -312,8 +309,8 @@ chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 
 st.altair_chart(chart10,use_container_width=True)
 
-st.write("Debug")
-
+st.write("Debug3")
+'''
 
 # Selector for Lag and Search Term
 heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
