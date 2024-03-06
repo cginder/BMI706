@@ -172,14 +172,15 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 connected_scatter_df['Year'] = pd.to_numeric(connected_scatter_df['Year'], errors='coerce').astype(int)
 
 slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1,name='slider')
-select_year = alt.param(bind=slider,value=connected_scatter_df['Year'].min())
+select_year = alt.param(name="Show Year",bind=slider,value=connected_scatter_df['Year'].min())
 
-chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
+chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.condition(
-        alt.datum.Year > select_year.Year,
-        alt.value('grey'),alt.value('blue')
+        alt.datum.Year < select_year.Year,
+        alt.value('grey'),
+        'State'
     ),
     tooltip=[
         alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
