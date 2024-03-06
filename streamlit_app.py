@@ -194,6 +194,19 @@ chart5 = alt.Chart(connected_scatter_df).mark_point().encode(
 ).add_params(
     select_year
 )
+
+lines = alt.Chart(connected_scatter_df).mark_line().encode(
+    x="Relative_Weighting:Q",
+    y="Mortality_Rate:Q",
+    color="State:N",
+    detail="State:N"  # This ensures lines are drawn for each state separately
+).transform_filter(
+    'datum.Year < SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
+).add_params(
+    select_year
+)
+
+
 st.altair_chart(chart5,use_container_width=True)
 
 chart6 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
