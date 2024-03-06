@@ -251,15 +251,29 @@ st.altair_chart(chart6,use_container_width=True)
 
 ### Lagging Heatmap
 #Drop-down selector for outcome
-outcome_dropdown = alt.binding_select(options=outcome_options,name='cause_of_death')
-outcome_select = alt.selection_single(
-    fields=['cause_of_death'],bind=outcome_dropdown,init={'cause_of_death': outcome_dropdown[0]}
-)
+#outcome_dropdown = alt.binding_select(options=outcome_options,name='cause_of_death')
+#outcome_select = alt.selection_single(
+#    fields=['cause_of_death'],bind=outcome_dropdown,init={'cause_of_death': outcome_dropdown[0]}
+#)
 lag_slider = alt.binding_range(min=-5,max=5, step=1,name='Select year offset between search terms and outcome: ')
 select_lag = alt.param(name="LagSelector",bind=lag_slider,value=0)
 
 #create lag
-#lag_df = annual_avg_df
-#lag_df['lag_year'] = lag_df['Year']-select_lag
+lag_df = annual_avg_df
+lag_df['lag_year'] = lag_df['Year']-select_lag #### can't get this to work. Need to figure out how to pass along the slider selection; alternatively, we could do the small screens approach and hard code in a few lags.
+lag_heatmap_df  = pd.merge(lag_df,US_ave_mortality_df,left_on='lag_year',right_on='Year',how='inner')
+
+
+lag_correlation_df = lag_heatmap_df.groupby(['Search_Term']).apply(calculate_correlation).reset_index(name='Correlation')
+
+chart6 = alt.Chart(lag_correlation_df).mark_rect().encode(
+   x='Search_Term:N',
+   y='cause_of_death:N',
+   color='Correlation:Q'
+).properties(
+    title="Correlation of Google Search Terms with Cause of Mortality",
+    width=550
+)
+
 
 #str.write(lag_df.head(30))
