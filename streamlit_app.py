@@ -158,7 +158,7 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
     color=alt.Color("State",legend=alt.Legend(orient='right'))
 ).properties(
     title={"text":"Mortality Trends Over Time By State",
-           "subtitle":"Test"}
+           "subtitle":"Test"},
     width=550
 )
 #st.write(subset.head())
