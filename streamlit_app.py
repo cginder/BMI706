@@ -4,16 +4,6 @@ import streamlit as st
 import numpy as np
 
 
-
-#Open Tasks
-#[x] combine search term trends into one annual metric (average? Last?)
-#[x] get absolute/relative state level trends by multiplying state trend_value * trend value for that year
-#[] ?create radio buttons to turn on/off filtering by each condition
-#[x] year range 
-#[] fixing label size so plots line up better
-#[] 
-
-
 ##Read Data
 mortality_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/mortality_data.csv")
 gtrend_US_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_US_trends.csv")
@@ -139,7 +129,6 @@ chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
     title="PROBABLY DISCARD: Mortality Trends Over Time",
     width=550
 )
-#st.write(subset.head())
 st.altair_chart(chart2,use_container_width=True)
 
 #State Based Google Trends
@@ -209,9 +198,9 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
     color=alt.condition(state_selection,
                         "State:N",
                         alt.value("lightgrey")),
-    detail="State:N"  # This ensures lines are drawn for each state separately
+    detail="State:N"  
 ).transform_filter(
-    'datum.Year <= SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
+    'datum.Year <= SelectorName'  
 ).add_params(
     select_year
 ).add_selection(
@@ -261,7 +250,6 @@ lag_points = []
 for search_term in trend_options:
     correlations = []
     for lag in lag_values:
-        # Create a copy to avoid modifying the original DataFrame
         temp_df = annual_avg_df.copy()
         # Apply the lag
         temp_df['lag_year'] = temp_df['Year'] + lag
@@ -278,13 +266,10 @@ for search_term in trend_options:
     correlation_results[search_term] = correlations
 
 lag_points_df = pd.concat(lag_points,ignore_index=True)
-
-# Now that we have our correlations calculated, let's turn this into a DataFrame
 lag_correlation_df = pd.DataFrame(correlation_results, index=lag_values)
 
 # Convert the DataFrame to long format
 lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name='Search_Term', value_name='Correlation')
-
 # Give the 'index' column a more meaningful name
 lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
@@ -308,14 +293,14 @@ lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblcl
 search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
-    x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
+    x='Lag:O',  
     y='Search_Term:N',
     color='Correlation:Q',
     opacity=alt.condition(
         lag_heat_selection & 
         search_heat_selection,
-        alt.value(1),  # This will apply for selected items
-        alt.value(0.5)  # This will apply for non-selected items, fixed typo here
+        alt.value(1),  
+        alt.value(0.5)  
     )
 ).properties(
     title={
