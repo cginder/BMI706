@@ -291,11 +291,11 @@ lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
 st.write(lag_heatmap_df)
 st.write("Debug1")
-'''
+
 st.write(lag_points_df.head())
 
 st.write("Debug2")
-
+'''
 
 
 }
