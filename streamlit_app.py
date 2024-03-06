@@ -326,9 +326,11 @@ chart8 = alt.Chart(lag_points_df).mark_point().encode(
     color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('ligfhtgray'))
 ).add_params(
     heat_selection
+).transform_filter(
+    heat_selection 
 )
 
-st.altair_chart(chart8,use_container_width=True)
+#st.altair_chart(chart8,use_container_width=True)
 
 
 combined_chart = chart8 | chart7
