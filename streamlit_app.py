@@ -288,8 +288,6 @@ lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name=
 # Give the 'index' column a more meaningful name
 lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
-
-
 st.write(lag_heatmap_df)
 st.write(lag_points_df)
 
@@ -304,7 +302,10 @@ chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     width=550
 )
 
+
 st.altair_chart(chart10,use_container_width=True)
+
+st.write("Debug")
 
 
 # Selector for Lag and Search Term
