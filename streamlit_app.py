@@ -282,6 +282,7 @@ for search_term in trend_options:
 lag_correlation_table_df = pd.DataFrame(correlation_results)
 lag_correlation_table_df.set_index('Lag', inplace=True)
 
+st.write(lag_correlation_table_df.head(30))
 
 chart7 = alt.Chart(lag_correlation_table_df).mark_rect().encode(
    x='Lag:O',
