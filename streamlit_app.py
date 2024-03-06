@@ -8,7 +8,9 @@ import streamlit as st
 #[x] combine search term trends into one annual metric (average? Last?)
 #[x] get absolute/relative state level trends by multiplying state trend_value * trend value for that year
 #[] ?create radio buttons to turn on/off filtering by each condition
-#[] year range 
+#[x] year range 
+#[] fixing label size so plots line up better
+#[] 
 
 
 ##Read Data
@@ -88,8 +90,13 @@ default_trend_values = ["Cigarette","Diet","Statin"]
 trends = st.multiselect("Search_Term",
     options = trend_options,default = default_trend_values)
 
-trend_subset = merged_df[merged_df["Search_Term"].isin(trends) & 
+trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
+
+trend_subset_state_df = merged_df[merged_df["Search_Term"].isin(trends) &
+                        (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
+                        (merged_df['State'].isin(states))]
+
 
 #Outcome Selector
 outcome_options = subset["cause_of_death"].unique().tolist()
@@ -98,25 +105,39 @@ outcomes = st.multiselect("Select Cause(s) of Death",
 )
 subset = subset[subset["cause_of_death"].isin(outcomes)]
 
-#Test Plot 1
-chart = alt.Chart(trend_subset).mark_line(point=True).encode(
+#Different Google Trends Graph
+chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("Annual_Avg_Trend_Value"),
     color=alt.Color("Search_Term",legend=alt.Legend(orient='right'))
 ).properties(
+    title="Google Trends Over Time",
     width=550
 )
 
 st.altair_chart(chart,use_container_width=True)
 
 
-#Test Plot 2
+#Different Mortality Trends Over Time
 chart2 = alt.Chart(subset).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
     y=alt.Y("sum(Deaths):Q"),
     color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
 ).properties(
+    title="Mortality Trends Over Time",
     width=550
 )
 #st.write(subset.head())
 st.altair_chart(chart2,use_container_width=True)
+
+#State Based Google Trends
+chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
+    x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
+    y=alt.Y("Relative_Weighting:Q"),
+    color=alt.Color("State",legend=alt.Legend(orient='right'))
+).properties(
+    title="Google Trends Over Time By State",
+    width=550
+)
+#st.write(subset.head())
+st.altair_chart(chart3,use_container_width=True)
