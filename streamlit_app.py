@@ -332,7 +332,6 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 ).add_selection(
     heat_selection
 )
-st.write('debug5')
 
 
 chart8 = alt.Chart(lag_points_df).mark_point().encode(
