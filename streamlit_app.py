@@ -194,7 +194,7 @@ base_chart5 = alt.Chart(connected_scatter_df).encode(
 )
 
 line_chart5 = base_chart5.mark_line()
-point_chart5 = base_chart.mark_point()
+point_chart5 = base_chart5.mark_point()
 chart5 = alt.layer(line_chart5,point_chart5).properties(
     title={"text":"Connected Scatter Plot: Mortality by Search Trends",
            "subtitle":[f"Selected outcomes: {outcomes_title}",f"Selected search term: {chart_3_trend}"]},
