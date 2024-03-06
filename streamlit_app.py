@@ -206,7 +206,7 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
     x="Relative_Weighting:Q",
     y="Mortality_Rate:Q",
     order="Year:O",
-    color=alt.Condition(state_selection,
+    color=alt.condition(state_selection,
                         "State:N",
                         alt.value("lightgrey")),
     detail="State:N"  # This ensures lines are drawn for each state separately
