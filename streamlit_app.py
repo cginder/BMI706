@@ -159,7 +159,6 @@ chart4 = alt.Chart(subset).mark_line(point=True).encode(
            "subtitle":f"Selected outcomes: {outcomes_title}"},
     width=550
 )
-#st.write(subset.head())
 st.altair_chart(chart4,use_container_width=True)
 
 #Chart 5
@@ -173,3 +172,4 @@ chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
            "subtitle":[f"Selected outcomes: {outcomes_title}",f"Selected search term: {chart_3_trend}"]},
     width=550
 )
+st.altair_chart(chart5,use_container_width=True)
