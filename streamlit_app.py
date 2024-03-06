@@ -241,6 +241,25 @@ chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
     x='Search_Term:N',
    y='cause_of_death:N',
    color='Correlation:Q'
+).properties(
+    title="Correlation of Google Search Terms with Cause of Mortality"
+    width=550
 )
 
 st.altair_chart(chart6,use_container_width=True)
+
+
+### Lagging Heatmap
+#Drop-down selector for outcome
+outcome_dropdown = alt.binding_select(options=outcome_options,name='Outcome')
+outcome_select = alt.selection_single(
+    fields=['cause_of_death'],bind=outcome_dropdown,init={'cause_of_death': outcome_dropdown[0]}
+)
+lag_slider = alt.binding_range(min=-5,max=5, step=1,name='Select year offset between search terms and outcome: ')
+select_lag = alt.param(name="LagSelector",bind=lag_slider,value=0)
+
+#create lag
+lag_df = annual_avg_df
+lag_df['lag_year'] = lag_df['Year']-select_lag
+
+str.write(lag_df.head(30))
