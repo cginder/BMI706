@@ -289,9 +289,6 @@ lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name=
 # Give the 'index' column a more meaningful name
 lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
-# Selector for Lag and Search Term
-heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
-
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
    y='Search_Term:N',
@@ -305,8 +302,11 @@ chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 st.altair_chart(chart10,use_container_width=True)
 
 
+# Selector for Lag and Search Term
+heat_selection = alt.selection_point(fields=['Lag','Search_Term'])
+
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
-   x='Lag:O',
+   x='Lag',
    y='Search_Term:N',
    color= alt.condition(heat_selection,alt.Color('Correlation:Q'),alt.value('ligfhtgray'))
 ).properties(
@@ -316,7 +316,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 )
 
 chart8 = alt.Chart(lag_points_df).mark_point().encode(
-    x="Year_x:O",
+    x="Year_x",
     y="Morality_Rate:Q",
     color= alt.condition(heat_selection,alt.Color('Search_Term:N'),alt.value('ligfhtgray'))
 ).add_params(
