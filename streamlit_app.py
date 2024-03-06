@@ -288,14 +288,6 @@ lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name=
 # Give the 'index' column a more meaningful name
 lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
-
-st.write(lag_heatmap_df)
-st.write("Debug1")
-
-st.write(lag_points_df.head())
-
-st.write("Debug2")
-
 chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
    x='Lag:O',
    y='Search_Term:N',
@@ -309,15 +301,11 @@ chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 
 st.altair_chart(chart10,use_container_width=True)
 
-st.write("Debug3")
-
 
 
 # Selector for Lag and Search Term
 lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
 search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
-
-st.write(lag_points_df)
 
 chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
     x='Lag:O',  # Ensure that 'Lag' is treated as an ordinal (O) or nominal (N) data type as needed
@@ -357,7 +345,7 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
     lag_heat_selection
 ).add_params(
     search_heat_selection
-).transform_regression('Annual_Avg_Trend_Value','Morality_Rate').mark_line()
+).transform_regression('Annual_Avg_Trend_Value','Mortality_Rate').mark_line()
 
 combined_chart = alt.vconcat(chart7,chart8)
 
