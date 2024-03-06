@@ -209,8 +209,6 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
     'datum.Year < SelectorName'  # Assuming you want lines only for data before 2014, adjust as necessary
 ).add_params(
     select_year
-).add_selection(
-    state_selection
 )
 
 chart5 = points + lines
