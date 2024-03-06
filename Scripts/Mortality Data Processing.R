@@ -29,5 +29,9 @@ combined_df <- combined_df %>% mutate(Deaths = replace_na(Deaths,0))
 combined_df <- combined_df %>% mutate(cause_of_death = str_replace(cause_of_death,"all_cause_2","all_cause"))
 combined_df$cause_of_death <- as.factor(combined_df$cause_of_death)
 
+combined_df <- combined_df %>%
+  mutate(cause_of_death = str_replace_all(cause_of_death, "_", " "),  # Replace underscores with spaces
+         cause_of_death = str_to_title(cause_of_death))  # Convert to title case
+
 # Optional: Write the combined dataframe to a new CSV file
 write_csv(combined_df, "mortality_data.csv")
