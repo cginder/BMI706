@@ -179,7 +179,7 @@ chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.condition(
-        alt.datum.Year < select_year,
+        alt.datum.Year < select_year.Year,
         alt.value('grey'),
         'State'
     ),
