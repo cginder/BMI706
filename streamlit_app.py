@@ -173,27 +173,14 @@ connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_r
 connected_scatter_df['Year'] = pd.to_numeric(connected_scatter_df['Year'], errors='coerce').astype(int)
 
 # Creating a slider for the years
-
-rand = np.random.RandomState(42)
-
-df = pd.DataFrame({
-    'xval': range(100),
-    'yval': rand.randn(100).cumsum()
-})
-
-slider = alt.binding_range(min=0, max=100, step=1, name='cutoff:')
-selector = alt.selection_single(name="SelectorName", fields=['cutoff'],
-                                bind=slider, init={'cutoff': 50})
-
-
-#slider = alt.binding_range(min=2009, max=2014, step=1, name='slider_year')
-#select_year = alt.selection_single(name="SelectorName", fields=['slider_year'], bind=slider, init={'slider_year': 2009})
+slider = alt.binding_range(min=2009, max=2014, step=1, name='slider_year')
+select_year = alt.param(bind=slider,value=2013)
 
 chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
     x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
     y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
     color=alt.condition(
-        alt.datum.Year < select_year.Year,
+        alt.datum.Year < select_year,
         alt.value('grey'),
         'State'
     ),
@@ -203,12 +190,12 @@ chart5 = alt.Chart(connected_scatter_df).mark_line(point=True).encode(
         alt.Tooltip('Relative_Weighting:Q', title='Relative Weighting'),
         alt.Tooltip('Year:O', title='Year') 
     ]
+).add_params(
+    select_year
 ).properties(
     title={"text":"Connected Scatter Plot: Mortality by Search Trends",
            "subtitle":[f"Selected outcomes: {outcomes_title}",f"Selected search term: {chart_3_trend}"]},
     width=550
-).add_selection(
-    select_year
 )
 
 st.altair_chart(chart5,use_container_width=True)
