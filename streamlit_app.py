@@ -351,7 +351,7 @@ chart8 = alt.Chart(lag_points_df).transform_filter(
     width=550
 #).add_params(
 #    lag_heat_selection
-).add_params(
+).add_selection(
     search_heat_selection
 )
 
