@@ -262,7 +262,7 @@ select_lag = alt.param(name="LagSelector",bind=lag_slider,value=0)
 lag_values = range(-5,6)
 correlation_results = {'Lag':lag_values}
 
-for outcome in outcome_options:
+for search_term in trend_options:
     correlations = []
     for lag in lag_values:
         # Create a copy to avoid modifying the original DataFrame
@@ -272,20 +272,20 @@ for outcome in outcome_options:
         # Merge based on the lagged year
         merged_df = pd.merge(temp_df, US_ave_mortality_df, left_on='lag_year', right_on='Year', how='inner')
         # Filter for the specific outcome
-        outcome_df = merged_df[merged_df['cause_of_death'] == outcome]
+        outcome_df = merged_df[merged_df['Search_Term '] == search_term]
         # Calculate the correlation
         correlation = calculate_correlation(outcome_df)
         correlations.append(correlation)
-    correlation_results[outcome] = correlations
+    correlation_results[search_term] = correlations
 
 # Create the DataFrame to display the table
 lag_correlation_table_df = pd.DataFrame(correlation_results)
 lag_correlation_table_df.set_index('Lag', inplace=True)
 
 
-chart7 = alt.Chart(lag_correlation_df).mark_rect().encode(
+chart7 = alt.Chart(lag_correlation_table_df).mark_rect().encode(
    x='Lag:O',
-   y='cause_of_death:N',
+   y='search_term:N',
    color='Correlation:Q'
 ).properties(
     title="Correlation of Google Search Terms with Cause of Mortality",
