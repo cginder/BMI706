@@ -335,7 +335,7 @@ chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
 
 
 chart8 = alt.Chart(lag_points_df).transform_filter(
-    datum.Search_Term == heat_selection.Search_Term
+    'datum.Search_Term == heat_selection.Search_Term'
 ).mark_point().encode(
     x="Year_y:O",
     y="Mortality_Rate:Q",
