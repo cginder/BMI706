@@ -249,7 +249,7 @@ st.altair_chart(chart6,use_container_width=True)
 
 ### Lagging Heatmap
 heat_outcome = st.selectbox("Select Cause of Death",
-    options = outcome_options)
+    options = outcome_options,default="All Cause")
 
 lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"] == heat_outcome]
 
