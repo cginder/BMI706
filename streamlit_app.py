@@ -365,7 +365,12 @@ def main():
     # Page-specific filters and page function calls
     if page == "Overview":
         st.title('Overview')
-        st.write('Welcome to the Health Trends Dashboard.')
+       st.write('''
+        Welcome to the Health Trends Dashboard. Please navigate and filter using the panel on the left side. 
+        The mortality and Google trends pages are to simply explore trends. 
+        The correlation plots are to explore relationships between mortality trends and google trends.
+    ''')
+
    
 
     elif page == "Google Trends Analysis":
