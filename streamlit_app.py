@@ -19,7 +19,7 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
     #Trend Selector
         trend_options = gtrend_US_df["Search_Term"].unique().tolist()
         selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
-        chart_3_trend = st.selectbox("Single Trend Selector)",
+        chart_3_trend = st.selectbox("Single Trend Selector",
             options = trend_options)
         trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                                (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
@@ -39,7 +39,7 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
     #State Based Google Trends
         chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
           x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-          y=alt.Y("Relative_Weighting:Q"),
+          y=alt.Y("Relative_Weighting:Q", title = "Relative Weight"),
           color=alt.Color("State",legend=alt.Legend(orient='right'))
         ).properties(
          title=f"Google Searches for {chart_3_trend} Over Time By State",
