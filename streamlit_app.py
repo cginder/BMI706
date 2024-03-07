@@ -234,7 +234,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
 
     chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
         x='Lag:O',  
-        y='Search_Term:N',
+        y=alt.Y('Search_Term:N', title='Search Term'),
         color='Correlation:Q',
         opacity=alt.condition(
             lag_heat_selection & 
@@ -260,8 +260,8 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
     ).transform_filter(
      lag_heat_selection
     ).mark_point().encode(
-        x="Annual_Avg_Trend_Value",
-        y="Mortality_Rate:Q",
+        x= alt.X("Annual_Avg_Trend_Value",title='Annual Average Trend Value'),
+        y=alt.Y('Mortality_Rate:Q', title='Mortality Rate')
         color='Search_Term:N'
     # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
     ).properties(
