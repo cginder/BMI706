@@ -367,8 +367,6 @@ def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
 
 # Main function to structure the Streamlit app with different pages
 def main():
-    # Load your data
-    mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df = load_and_preprocess_data()
     
     # Global selections: These selections will impact all pages if necessary
     year_range = st.sidebar.slider('Select Year Range:', 2004, 2019, (2007, 2014))
@@ -400,5 +398,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
