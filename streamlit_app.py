@@ -108,7 +108,7 @@ def main():
     if page == "Google Trends Analysis":
         trend_options = gtrend_US_df["Search_Term"].unique().tolist()
         selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
-        google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states, selected_trends)
+        google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states)
     
     # Filters specific to the Mortality Trends page
     elif page == "Mortality Trends":
@@ -388,6 +388,7 @@ def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
     st.altair_chart(combined_chart,use_container_width=True)
 
 ######################################
+
 
 
 
