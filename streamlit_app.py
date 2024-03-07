@@ -29,8 +29,8 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
     #Different Google Trends Graph
         chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
             x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
-            y=alt.Y("Annual_Avg_Trend_Value"),
-            color=alt.Color("Search_Term",legend=alt.Legend(orient='right'))
+            y=alt.Y("Annual Average Trend Value"),
+            color=alt.Color("Search_Term",title = 'Search Term', legend=alt.Legend(orient='right'))
         ).properties(
             title="Google Trends Over Time",
             width=550
