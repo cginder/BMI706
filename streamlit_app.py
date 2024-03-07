@@ -13,7 +13,7 @@ def overview_page():
         st.write('Welcome to the Health Trends Dashboard.')
 
 
-def google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate, outcomes, trend):
+def google_trends_page(merged_df, gtrend_US_df, trend):
         st.title('Google Trends Analysis')
 
     #Trend Selector
@@ -365,7 +365,7 @@ def main():
     elif page == "Google Trends Analysis":
           # Place Google Trends Analysis-specific filters in the sidebar
       # Call the page function with the selected trends
-      google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate, outcomes,trend)
+      google_trends_page(merged_df, gtrend_US_df, trend)
 
     elif page == "Mortality Trends":
     # If there are specific filters for Mortality Trends, they would go here.
