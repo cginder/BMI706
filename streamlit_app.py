@@ -39,10 +39,7 @@ def main():
     mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(age_group_mapping)
     ##Master Filter Chart
     subset = mortality_df
-    #Year Range Selector
-    year_range = st.slider('Years:',
-            2004,2019,(2007,2014))
-    subset = subset[(subset['Year'] >= year_range[0]) & (subset['Year'] <= year_range[1])]
+   
     #Sex Selector
     sex = st.radio("Sex",["Male","Female"])
     subset = subset[subset['Gender'] == sex]
@@ -64,12 +61,7 @@ def main():
         default=race_options
     )
     subset = subset[subset["Race"].isin(race)]
-    #State Selectors
-    state_options = subset['State'].unique().tolist()
-    default_states = ["Indiana","Massachusetts"]
-    states = st.multiselect("State:",
-        options = state_options,default=default_states
-    )
+   
     subset = subset[subset["State"].isin(states)]
     #Trend Selector -- TWO Different selectors, one for chart 1 and one for chart 2
     trend_options = gtrend_US_df["Search_Term"].unique().tolist()
@@ -90,10 +82,16 @@ def main():
 
   # Global sidebar controls:
     st.sidebar.title('Global Filters')
-    year_range = st.sidebar.slider('Select Year Range:', 2004, 2019, (2007, 2014))
-    selected_states = st.sidebar.multiselect("Select States:", options=state_options, default=["Indiana", "Massachusetts"])
-
-    
+     #State Selectors
+    state_options = subset['State'].unique().tolist()
+    default_states = ["Indiana","Massachusetts"]
+    states = st.sidebar.multiselect("State:",
+        options = state_options,default=default_states
+    )
+     #Year Range Selector
+    year_range = st.sidebar.slider('Years:',
+            2004,2019,(2007,2014))
+    subset = subset[(subset['Year'] >= year_range[0]) & (subset['Year'] <= year_range[1])]
 
     # Global data processing based on selections (if applicable):
     # For example, if you need to filter some dataframes based on the year_range and selected_states
@@ -389,6 +387,7 @@ def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
     st.altair_chart(combined_chart,use_container_width=True)
 
 ######################################
+
 
 
 
