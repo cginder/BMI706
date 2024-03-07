@@ -138,13 +138,13 @@ def google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df):
         st.title('Google Trends Analysis')
 
     #Trend Selector
-    chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
-        options = trend_options)
-    trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
-                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
-    trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
-                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
-                            (merged_df['State'].isin(states))]
+        chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
+            options = trend_options)
+        trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
+                               (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
+        trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
+                                (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
+                                (merged_df['State'].isin(states))]
     #Different Google Trends Graph
         chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
             x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
@@ -388,6 +388,7 @@ def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
     st.altair_chart(combined_chart,use_container_width=True)
 
 ######################################
+
 
 
 
