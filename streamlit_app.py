@@ -91,7 +91,7 @@ def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate
     state_selection = alt.selection_single(
         fields=["State"],bind='legend',name='SelectState'
     )
-    
+
 
     points = alt.Chart(connected_scatter_df).mark_point().encode(
         x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
@@ -365,7 +365,7 @@ def main():
     elif page == "Google Trends Analysis":
           # Place Google Trends Analysis-specific filters in the sidebar
       # Call the page function with the selected trends
-      google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate, merged_df, gtrend_US_df, cause_average_mortality_rate, trend_options, selected_trends, trend_subset_state_df, trend_subset_US_df)
+      google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate, trend_options, selected_trends, trend_subset_state_df, trend_subset_US_df)
 
     elif page == "Mortality Trends":
     # If there are specific filters for Mortality Trends, they would go here.
