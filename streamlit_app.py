@@ -13,7 +13,7 @@ def overview_page():
         st.write('Welcome to the Health Trends Dashboard.')
 
 
-def google_trends_page(merged_df, gtrend_US_df, trend, trend_subset_US_df, trend_subset_state_df):
+def google_trends_page(merged_df, gtrend_US_df, trend):
         st.title('Google Trends Analysis')
 
     #Trend Selector
