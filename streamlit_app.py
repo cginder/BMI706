@@ -79,7 +79,7 @@ def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_
     st.altair_chart(chart4,use_container_width=True)
 
 
-def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df):
+def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options):
     st.title('Correlation Analysis')
    
 #Connected Scatter Plots
@@ -375,7 +375,7 @@ def main():
 
     elif page == "Correlation Analysis":
     # If there are specific filters for Correlation Analysis, they would be placed here.
-         correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df)
+         correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options)
 
 if __name__ == "__main__":
     main()
