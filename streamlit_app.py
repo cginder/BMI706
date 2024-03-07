@@ -35,69 +35,55 @@ def main():
         '75-84': 7,
         '85+': 8  
     }
+     
     age_group_codes = list(age_group_mapping.keys())
     mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(age_group_mapping)
-    ##Master Filter Chart
-    subset = mortality_df
-   
-    #Sex Selector
-    sex = st.radio("Sex",["Male","Female"])
-    subset = subset[subset['Gender'] == sex]
-    #Age Group Range Selector
-    age_group_range = st.select_slider(
+
+    # Global sidebar controls:
+    st.sidebar.title('Global Filters')
+
+    # State Selectors
+    state_options = mortality_df['State'].unique().tolist()
+    default_states = ["Indiana", "Massachusetts"]
+    states = st.sidebar.multiselect("State:", options=state_options, default=default_states)
+
+    # Year Range Selector
+    year_range = st.sidebar.slider('Years:', 2004, 2019, (2007, 2014))
+
+    # Sex Selector
+    sex = st.sidebar.radio("Sex", ["Male", "Female"])
+
+    # Age Group Range Selector
+    age_group_range = st.sidebar.select_slider(
         "Select Age Group Range:",
         options=age_group_codes,
-        value=('15-24','75-84')
+        value=('15-24', '75-84')
     )
+
+    # Race Selectors
+    race_options = mortality_df["Race"].unique().tolist()
+    race = st.sidebar.multiselect("Select Races:", options=race_options, default=race_options)
+
+    # Trend Selector for Chart #1
+    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+    default_trend_values = ["Cigarette", "Diet", "Statin"]
+    trends = st.sidebar.multiselect("Multiple Trend Selector (For Chart #1):", options=trend_options, default=default_trend_values)
+
+    # Outcome Selector
+    outcome_options = mortality_df["cause_of_death"].unique().tolist()
+    outcomes = st.sidebar.multiselect("Select Cause(s) of Death:", options=outcome_options, default=["Acute Myocardial Infarction"])
+
+    # Apply filters
+    subset = mortality_df[(mortality_df['Year'] >= year_range[0]) & (mortality_df['Year'] <= year_range[1])]
+    subset = subset[subset['State'].isin(states)]
+    subset = subset[subset['Gender'] == sex]
     age_group_start_factor = age_group_mapping[age_group_range[0]]
     age_group_end_factor = age_group_mapping[age_group_range[1]]
-    subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) &
-        (subset['Age_Group_Factor'] <= age_group_end_factor)
-    ]
-    #Race Selectors
-    race_options = subset["Race"].unique().tolist()
-    race = st.multiselect("Select Races:",
-        options = race_options,
-        default=race_options
-    )
-    subset = subset[subset["Race"].isin(race)]
-   
-    subset = subset[subset["State"].isin(states)]
-    #Trend Selector -- TWO Different selectors, one for chart 1 and one for chart 2
-    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-    default_trend_values = ["Cigarette","Diet","Statin"]
-    trends = st.multiselect("Multiple Trend Selector (For Chart # 1)",
-        options = trend_options,default = default_trend_values)
-   
-    #Outcome Selector
-    outcome_options = subset["cause_of_death"].unique().tolist()
-    outcomes = st.multiselect("Select Cause(s) of Death",
-        options = outcome_options, default = "Acute Myocardial Infarction"
-    )
-    subset = subset[subset["cause_of_death"].isin(outcomes)]
-    #Convert Mortality to Rates After Final Filtering
-    subset["Mortality_Rate"] = subset["Deaths"]/subset["Population"] * 100_000
-    cause_average_mortality_rate = subset.groupby(['cause_of_death','Year'])['Mortality_Rate'].mean().reset_index()
-    state_average_mortality_rate = subset.groupby(['State','Year'])['Mortality_Rate'].mean().reset_index()
+    subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) & (subset['Age_Group_Factor'] <= age_group_end_factor)]
+    subset = subset[subset['Race'].isin(race)]
+    subset = subset[subset['cause_of_death'].isin(outcomes)]
+    subset["Mortality_Rate"] = subset["Deaths"] / subset["Population"] * 100_000
 
-  # Global sidebar controls:
-    st.sidebar.title('Global Filters')
-     #State Selectors
-    state_options = subset['State'].unique().tolist()
-    default_states = ["Indiana","Massachusetts"]
-    states = st.sidebar.multiselect("State:",
-        options = state_options,default=default_states
-    )
-     #Year Range Selector
-    year_range = st.sidebar.slider('Years:',
-            2004,2019,(2007,2014))
-    subset = subset[(subset['Year'] >= year_range[0]) & (subset['Year'] <= year_range[1])]
-
-    # Global data processing based on selections (if applicable):
-    # For example, if you need to filter some dataframes based on the year_range and selected_states
-    # and those filtered dataframes are used across multiple pages:
-    # filtered_data = original_data[(original_data['Year'].between(*year_range)) & (original_data['State'].isin(selected_states))]
-    
     # Page Navigation
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
@@ -387,6 +373,7 @@ def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
     st.altair_chart(combined_chart,use_container_width=True)
 
 ######################################
+
 
 
 
