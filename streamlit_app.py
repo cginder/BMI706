@@ -82,7 +82,11 @@ def main():
     subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) & (subset['Age_Group_Factor'] <= age_group_end_factor)]
     subset = subset[subset['Race'].isin(race)]
     subset = subset[subset['cause_of_death'].isin(outcomes)]
+    #Convert Mortality to Rates After Final Filtering
     subset["Mortality_Rate"] = subset["Deaths"] / subset["Population"] * 100_000
+    cause_average_mortality_rate = subset.groupby(['cause_of_death','Year'])['Mortality_Rate'].mean().reset_index()
+    state_average_mortality_rate = subset.groupby(['State','Year'])['Mortality_Rate'].mean().reset_index()
+
 
     # Page Navigation
     st.sidebar.title('Navigation')
@@ -90,24 +94,24 @@ def main():
 
     # Page-specific filters and page function calls
     if page == "Overview":
-         overview_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states) 
+         overview_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate,state state_average_mortality_rate) 
 
     elif page == "Google Trends Analysis":
           # Place Google Trends Analysis-specific filters in the sidebar
       trend_options = gtrend_US_df["Search_Term"].unique().tolist()
       selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
       # Call the page function with the selected trends
-      google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states)
+      google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate,state state_average_mortality_rate)
 
     elif page == "Mortality Trends":
     # If there are specific filters for Mortality Trends, they would go here.
     # As it looks like you've moved all filters globally, there might not be additional filters.
     # If there are, define and use them here.
-        mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states)
+        mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate,state state_average_mortality_rate)
 
     elif page == "Correlation Analysis":
     # If there are specific filters for Correlation Analysis, they would be placed here.
-         correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states)
+         correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate,state state_average_mortality_rate)
 
 if __name__ == "__main__":
     main()
@@ -118,7 +122,7 @@ def overview_page():
         st.write('Welcome to the Health Trends Dashboard.')
 
 
-def google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, trends, outcomes, race,age_group_range, sex, year_range, states):
+def google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, trends, outcomes, race,age_group_range, sex, year_range, states, cause_average_mortality_rate,state state_average_mortality_rate):
         st.title('Google Trends Analysis')
 
     #Trend Selector
@@ -154,7 +158,7 @@ def google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annua
 
 
 
-def mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states):
+def mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate,state state_average_mortality_rate):
     st.title('Mortality Trends')
 #Different Mortality Trends Over Time
     chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
@@ -182,7 +186,7 @@ def mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,an
     st.altair_chart(chart4,use_container_width=True)
 
 
-def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart, mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states):
+def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart, mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate,state state_average_mortality_rate):
     st.title('Correlation Analysis')
    
 #Connected Scatter Plots
