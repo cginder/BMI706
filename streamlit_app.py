@@ -49,7 +49,7 @@ subset = subset[subset['Gender'] == sex]
 
 #Age Group Range Selector
 age_group_range = st.select_slider(
-    "Select Age Group Range:",
+    "Select Age Group Range test test:",
     options=age_group_codes,
     value=('15-24','75-84')
 )
@@ -340,3 +340,4 @@ regression_line = chart8.transform_regression(
 combined_chart = alt.vconcat(chart7,chart8+ regression_line)
 
 st.altair_chart(combined_chart,use_container_width=True)
+
