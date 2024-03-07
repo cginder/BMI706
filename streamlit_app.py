@@ -137,7 +137,6 @@ def overview_page():
 def google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df):
         st.title('Google Trends Analysis')
 
-    trend_options = gtrend_US_df["Search_Term"].unique().tolist()  # Make sure this line is inside the function if trend_options isn't globally defined    
     #Trend Selector
     chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
         options = trend_options)
