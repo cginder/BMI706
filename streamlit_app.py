@@ -158,7 +158,7 @@ def google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annua
 
 
 
-def mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate):
+def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_rate):
     st.title('Mortality Trends')
 #Different Mortality Trends Over Time
     chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
