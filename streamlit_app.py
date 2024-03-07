@@ -79,9 +79,21 @@ def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_
     st.altair_chart(chart4,use_container_width=True)
 
 
-def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options):
+def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options,states,year_range,trends):
     st.title('Correlation Analysis')
-   
+    #Trend Selector
+    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+    selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
+    chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
+        options = trend_options)
+    trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
+                        (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
+    trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
+                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
+                            (merged_df['State'].isin(states))]
+
+
+
 #Connected Scatter Plots
     connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
 
@@ -375,7 +387,7 @@ def main():
 
     elif page == "Correlation Analysis":
     # If there are specific filters for Correlation Analysis, they would be placed here.
-         correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options)
+         correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options,states,year_range,trends)
 
 if __name__ == "__main__":
     main()
