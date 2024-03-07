@@ -11,6 +11,9 @@ import numpy as np
 def overview_page():
         st.title('Overview')
         st.write('Welcome to the Health Trends Dashboard.')
+        st.write('Please navigate and filter using the panel on the left side.')
+        st.write('The mortality and Google trends pages are to simply explore trends.')
+        st.write('The correlation plots are to explore relationships between mortality trends and google trends.')
 
 
 def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range, states):
