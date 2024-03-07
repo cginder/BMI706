@@ -58,7 +58,7 @@ def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_
     chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
         x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
         y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-        color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
+        color=alt.Color("cause_of_death", title = 'Cause of Death', legend=alt.Legend(orient='right'))
     ).properties(
         title="Mortality Trends Over Time",
         width=550
