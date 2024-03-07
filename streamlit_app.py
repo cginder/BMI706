@@ -32,7 +32,7 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
             y=alt.Y("Annual_Avg_Trend_Value"),
             color=alt.Color("Search_Term",legend=alt.Legend(orient='right'))
         ).properties(
-            title="ROBABLY DISCARD: Google Trends Over Time",
+            title="Google Trends Over Time",
             width=550
         )
 
@@ -59,7 +59,7 @@ def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_
         y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
         color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
     ).properties(
-        title="PROBABLY DISCARD: Mortality Trends Over Time",
+        title="Mortality Trends Over Time",
         width=550
     )
     
