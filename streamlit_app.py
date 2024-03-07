@@ -146,220 +146,219 @@ def google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df):
 def mortality_trends_page(mortality_df, subset, cause_average_mortality_rate):
     st.title('Mortality Trends')
 #Different Mortality Trends Over Time
-chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
-    x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-    color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
-).properties(
-    title="PROBABLY DISCARD: Mortality Trends Over Time",
-    width=550
-)
-st.altair_chart(chart2,use_container_width=True)
-
+    chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
+        x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
+        y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
+        color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
+    ).properties(
+        title="PROBABLY DISCARD: Mortality Trends Over Time",
+        width=550
+    )
+    
 #Different Mortality Trends Over Time
-outcomes_title = ', '.join(outcomes)
+    outcomes_title = ', '.join(outcomes)
 
-chart4 = alt.Chart(state_average_mortality_rate).mark_line(point=True).encode(
-    x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-    color=alt.Color("State",legend=alt.Legend(orient='right'))
-).properties(
-    title={"text":"Mortality Trends Over Time By State",
+    chart4 = alt.Chart(state_average_mortality_rate).mark_line(point=True).encode(
+        x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
+        y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
+        color=alt.Color("State",legend=alt.Legend(orient='right'))
+    ).properties(
+        title={"text":"Mortality Trends Over Time By State",
            "subtitle":f"Selected outcomes: {outcomes_title}"},
-    width=550
-)
-st.altair_chart(chart4,use_container_width=True)
+        width=550
+    )
+    st.altair_chart(chart2,use_container_width=True)
+    st.altair_chart(chart4,use_container_width=True)
 
 
 def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
     st.title('Correlation Analysis')
    
 #Connected Scatter Plots
-connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
+    connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
 
 # Creating a slider for the years & selector with legend
-slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='Select Year: ')
-select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
-state_selection = alt.selection_single(
-    fields=["State"],bind='legend',name='SelectState'
-)
+    slider = alt.binding_range(min=connected_scatter_df['Year'].min(), max=connected_scatter_df['Year'].max(), step=1, name='Select Year: ')
+    select_year = alt.param(name="SelectorName",bind=slider,value=connected_scatter_df['Year'].min())
+    state_selection = alt.selection_single(
+        fields=["State"],bind='legend',name='SelectState'
+    )
 
-points = alt.Chart(connected_scatter_df).mark_point().encode(
-    x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
-    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-    order="Year:O",
-    color=alt.condition(state_selection,
+    points = alt.Chart(connected_scatter_df).mark_point().encode(
+        x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
+        y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
+        order="Year:O",
+        color=alt.condition(state_selection,
                         "State:N",
                         alt.value("white")),
-    opacity=alt.condition(
-        'datum.Year <= SelectorName',
-        alt.value(1),
-        alt.value(0.25)
-    ),
-    tooltip=[
-        alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
-        alt.Tooltip('State:N', title='State'),
-        alt.Tooltip('Relative_Weighting:Q', title='Relative Weighting'),
-        alt.Tooltip('Year:O', title='Year') 
-    ]
-).add_params(
-    select_year
-).add_selection(
-    state_selection
-)
+        opacity=alt.condition(
+            'datum.Year <= SelectorName',
+            alt.value(1),
+            alt.value(0.25)
+        ),
+        tooltip=[
+            alt.Tooltip('Mortality_Rate:Q', title='Mortality Rate'),
+            alt.Tooltip('State:N', title='State'),
+            alt.Tooltip('Relative_Weighting:Q', title='Relative Weighting'),
+            alt.Tooltip('Year:O', title='Year') 
+        ]
+    ).add_params(
+     select_year
+    ).add_selection(
+     state_selection
+    )
 
-lines = alt.Chart(connected_scatter_df).mark_line().encode(
-    x="Relative_Weighting:Q",
-    y="Mortality_Rate:Q",
-    order="Year:O",
-    color=alt.condition(state_selection,
-                        "State:N",
-                        alt.value("lightgrey")),
-    detail="State:N"  
-).transform_filter(
-    'datum.Year <= SelectorName'  
-).add_params(
-    select_year
-).add_selection(
-    state_selection
-)
+    lines = alt.Chart(connected_scatter_df).mark_line().encode(
+        x="Relative_Weighting:Q",
+        y="Mortality_Rate:Q",
+        order="Year:O",
+        color=alt.condition(state_selection,
+                            "State:N",
+                            alt.value("lightgrey")),
+     detail="State:N"  
+    ).transform_filter(
+        'datum.Year <= SelectorName'  
+    ).add_params(
+        select_year
+    ).add_selection(
+        state_selection
+    )
 
-chart5 = points + lines
+    chart5 = points + lines
 
-st.altair_chart(chart5,use_container_width=True)
-
+    st.altair_chart(chart5,use_container_width=True)
 
 
 
 
 ### Heatmap
-US_ave_mortality_df = mortality_df.groupby(['Year','cause_of_death'])[['Deaths','Population']].sum().reset_index()
-US_ave_mortality_df['Mortality_Rate'] = US_ave_mortality_df["Deaths"]/US_ave_mortality_df["Population"] * 100_000
-heatmap_df  = pd.merge(annual_avg_df,US_ave_mortality_df,on='Year',how='inner')
+    US_ave_mortality_df = mortality_df.groupby(['Year','cause_of_death'])[['Deaths','Population']].sum().reset_index()
+    US_ave_mortality_df['Mortality_Rate'] = US_ave_mortality_df["Deaths"]/US_ave_mortality_df["Population"] * 100_000
+    heatmap_df  = pd.merge(annual_avg_df,US_ave_mortality_df,on='Year',how='inner')
 
 # Function to calculate Pearson correlation for a group
-def calculate_correlation(group):
-    return group['Annual_Avg_Trend_Value'].corr(group['Mortality_Rate'])
+    def calculate_correlation(group):
+        return group['Annual_Avg_Trend_Value'].corr(group['Mortality_Rate'])
 
 # Group by 'cause_of_death' and apply the correlation calculation function
-correlation_by_cause = heatmap_df.groupby(['Search_Term','cause_of_death']).apply(calculate_correlation).reset_index(name='Correlation')
+    correlation_by_cause = heatmap_df.groupby(['Search_Term','cause_of_death']).apply(calculate_correlation).reset_index(name='Correlation')
 
-chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
-    x='Search_Term:N',
-   y='cause_of_death:N',
-   color='Correlation:Q'
-).properties(
-    title="Correlation of Google Search Terms with Cause of Mortality",
-    width=550
-)
+    chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
+        x='Search_Term:N',
+    y='cause_of_death:N',
+    color='Correlation:Q'
+    ).properties(
+        title="Correlation of Google Search Terms with Cause of Mortality",
+        width=550
+    )
 
-st.altair_chart(chart6,use_container_width=True)
+    st.altair_chart(chart6,use_container_width=True)
 
 
 ### Lagging Heatmap
-heat_outcome = st.selectbox("Select Cause of Death",
-    options = outcome_options)
+    heat_outcome = st.selectbox("Select Cause of Death",
+        options = outcome_options)
 
-lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"] == heat_outcome]
+    lag_heat_mortality_df = US_ave_mortality_df[US_ave_mortality_df["cause_of_death"] == heat_outcome]
 
 #create lag
-lag_values = range(-5,6)
-correlation_results = {}
-lag_points = []
+    lag_values = range(-5,6)
+    correlation_results = {}
+    lag_points = []
 
-for search_term in trend_options:
-    correlations = []
-    for lag in lag_values:
-        temp_df = annual_avg_df.copy()
-        # Apply the lag
-        temp_df['lag_year'] = temp_df['Year'] + lag
-        # Merge based on the lagged year
-        merged_df = pd.merge(temp_df, lag_heat_mortality_df, left_on='lag_year', right_on='Year', how='inner')
-        # Filter for the specific search_term
-        search_term_df = merged_df[merged_df['Search_Term'] == search_term]
-        search_term_df['Lag'] = lag
-        # Calculate the correlation
-        correlation = calculate_correlation(search_term_df)
-        correlations.append(correlation)
-        # Append DataFrame to list
-        lag_points.append(search_term_df)
-    correlation_results[search_term] = correlations
+    for search_term in trend_options:
+        correlations = []
+        for lag in lag_values:
+            temp_df = annual_avg_df.copy()
+            # Apply the lag
+            temp_df['lag_year'] = temp_df['Year'] + lag
+            # Merge based on the lagged year
+            merged_df = pd.merge(temp_df, lag_heat_mortality_df, left_on='lag_year', right_on='Year', how='inner')
+            # Filter for the specific search_term
+            search_term_df = merged_df[merged_df['Search_Term'] == search_term]
+            search_term_df['Lag'] = lag
+            # Calculate the correlation
+            correlation = calculate_correlation(search_term_df)
+            correlations.append(correlation)
+            #Append DataFrame to list
+            lag_points.append(search_term_df)
+        correlation_results[search_term] = correlations
 
-lag_points_df = pd.concat(lag_points,ignore_index=True)
-lag_correlation_df = pd.DataFrame(correlation_results, index=lag_values)
+    lag_points_df = pd.concat(lag_points,ignore_index=True)
+    lag_correlation_df = pd.DataFrame(correlation_results, index=lag_values)
 
-# Convert the DataFrame to long format
-lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name='Search_Term', value_name='Correlation')
-# Give the 'index' column a more meaningful name
-lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
+    # Convert the DataFrame to long format
+    lag_heatmap_df= lag_correlation_df.reset_index().melt(id_vars='index', var_name='Search_Term', value_name='Correlation')
+    # Give the 'index' column a more meaningful name
+    lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
-chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
-   x='Lag:O',
-   y='Search_Term:N',
-   color='Correlation:Q'
-).properties(
-    title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
-           "subtitle":f"Selected outcome:{heat_outcome}"}, 
-    width=550
-)
+    chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
+        x='Lag:O',
+        y='Search_Term:N',
+        color='Correlation:Q'
+    ).properties(
+        title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
+               "subtitle":f"Selected outcome:{heat_outcome}"}, 
+        width=550
+    )
 
 
-st.altair_chart(chart10,use_container_width=True)
+    st.altair_chart(chart10,use_container_width=True)
 
 
 
 # Selector for Lag and Search Term
-lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
-search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
+    lag_heat_selection = alt.selection_multi(fields=['Lag'], on='click',clear='dblclick', toggle=True)
+    search_heat_selection = alt.selection_multi(fields=['Search_Term'], on='click',clear='dblclick', toggle=True)
 
-chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
-    x='Lag:O',  
-    y='Search_Term:N',
-    color='Correlation:Q',
-    opacity=alt.condition(
-        lag_heat_selection & 
-        search_heat_selection,
-        alt.value(1),  
-        alt.value(0.5)  
+    chart7 = alt.Chart(lag_heatmap_df).mark_rect().encode(
+        x='Lag:O',  
+        y='Search_Term:N',
+        color='Correlation:Q',
+        opacity=alt.condition(
+            lag_heat_selection & 
+            search_heat_selection,
+            alt.value(1),  
+            alt.value(0.5)  
+        )
+    ).properties(
+        title={
+            "text": "C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
+            "subtitle": f"Selected outcome: {heat_outcome}"
+        },
+        width=550
+    ).add_selection(
+     lag_heat_selection
+    ).add_selection(
+     search_heat_selection
     )
-).properties(
-    title={
-        "text": "C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
-        "subtitle": f"Selected outcome: {heat_outcome}"
-    },
-    width=550
-).add_selection(
-    lag_heat_selection
-).add_selection(
-    search_heat_selection
-)
 
 
-chart8 = alt.Chart(lag_points_df).transform_filter(
-    search_heat_selection
-).transform_filter(
-    lag_heat_selection
-).mark_point().encode(
-    x="Annual_Avg_Trend_Value",
-    y="Mortality_Rate:Q",
-    color='Search_Term:N'
-   # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
-).properties(
-    width=550
-).add_params(
-    lag_heat_selection
-).add_params(
-    search_heat_selection
-)
+    chart8 = alt.Chart(lag_points_df).transform_filter(
+        search_heat_selection
+    ).transform_filter(
+     lag_heat_selection
+    ).mark_point().encode(
+        x="Annual_Avg_Trend_Value",
+        y="Mortality_Rate:Q",
+        color='Search_Term:N'
+    # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
+    ).properties(
+         width=550
+    ).add_params(
+        lag_heat_selection
+    ).add_params(
+        search_heat_selection
+    )
 
-regression_line = chart8.transform_regression(
-    'Annual_Avg_Trend_Value', 'Mortality_Rate', method="linear"
-).mark_line(
-    color='lightgrey', strokeDash=[5, 5]
-)
-combined_chart = alt.vconcat(chart7,chart8+ regression_line)
+    regression_line = chart8.transform_regression(
+        'Annual_Avg_Trend_Value', 'Mortality_Rate', method="linear"
+    ).mark_line(
+        color='lightgrey', strokeDash=[5, 5]
+    )
+    combined_chart = alt.vconcat(chart7,chart8+ regression_line)
 
-st.altair_chart(combined_chart,use_container_width=True)
+    st.altair_chart(combined_chart,use_container_width=True)
 
 ######################################
 
@@ -369,21 +368,24 @@ st.altair_chart(combined_chart,use_container_width=True)
 # Main function to structure the Streamlit app with different pages
 def main():
     
-    # Side bar for navigation
+    year_range = st.sidebar.slider('Select Year Range:', 2000, 2020, (2010, 2015))
+    
+    # Page Navigation
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
-
-    # Page routing
-    if page == "Overview":
-        overview_page()
+    
+    # Page-specific Filters (only shown when the respective page is active)
+    if page == "Google Trends Analysis":
+        trend_selector = st.sidebar.selectbox("Select Google Trend:", ['Trend 1', 'Trend 2', 'Trend 3'])
+        google_trends_page(trend_selector)
     elif page == "Mortality Trends":
-        mortality_trends_page(mortality_df, subset, cause_average_mortality_rate)  # Pass necessary data
-    elif page == "Google Trends Analysis":
-        google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df)  # Pass necessary data
+        age_group_selector = st.sidebar.selectbox("Select Age Group:", ['0-10', '11-20', '21-30'])
+        mortality_trends_page(age_group_selector)
     elif page == "Correlation Analysis":
-        correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart)  # Pass necessary data
+        correlation_analysis_page()  # This page might not need extra selectors
+    elif page == "Overview":
+        overview_page()
 
 if __name__ == "__main__":
     main()
-    
-    
+
