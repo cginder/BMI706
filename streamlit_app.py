@@ -6,115 +6,6 @@ import numpy as np
 
 # Main function to structure the Streamlit app with different pages
   
-def main():
-    # Load your data here (if it's not part of page-specific functions)
-    
-      ##Read Data
-    mortality_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/mortality_data.csv")
-    gtrend_US_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_US_trends.csv")
-    gtrend_state_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_state_based.csv")
-
-    ##Data Processing
-    #Combine US Trend Data Into Annual Data
-    gtrend_US_df['Month'] = pd.to_datetime(gtrend_US_df['Month'])
-    gtrend_US_df['Year'] = gtrend_US_df['Month'].dt.year #convert to date/time format
-    annual_avg_df = gtrend_US_df.groupby(['Year', 'Search_Term'])['Trend_Value'].mean().reset_index() #calculate average per year
-    annual_avg_df.rename(columns={'Trend_Value': 'Annual_Avg_Trend_Value'}, inplace=True) #rename for clarity
-    #Merge State Level Data to Get Relative Ranking (Annual Search Term Value * Relative Search Term Value for that state, that year)
-    merged_df = pd.merge(gtrend_state_df, annual_avg_df, on=['Year', 'Search_Term'], how='left')
-    merged_df['Relative_Weighting'] = merged_df['Annual_Avg_Trend_Value'] * merged_df['Search_Term_Value'] / 100
-    merged_df.rename(columns={'Region':'State'},inplace=True)
-    #Convert Age Group Codes to Factors
-    age_group_mapping = {
-        '15-24': 1,
-        '25-34': 2,
-        '35-44': 3,
-        '45-54': 4,
-        '55-64': 5,
-        '65-74': 6,
-        '75-84': 7,
-        '85+': 8  
-    }
-     
-    age_group_codes = list(age_group_mapping.keys())
-    mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(age_group_mapping)
-
-    # Global sidebar controls:
-    st.sidebar.title('Global Filters')
-
-    # State Selectors
-    state_options = mortality_df['State'].unique().tolist()
-    default_states = ["Indiana", "Massachusetts"]
-    states = st.sidebar.multiselect("State:", options=state_options, default=default_states)
-
-    # Year Range Selector
-    year_range = st.sidebar.slider('Years:', 2004, 2019, (2007, 2014))
-
-    # Sex Selector
-    sex = st.sidebar.radio("Sex", ["Male", "Female"])
-
-    # Age Group Range Selector
-    age_group_range = st.sidebar.select_slider(
-        "Select Age Group Range:",
-        options=age_group_codes,
-        value=('15-24', '75-84')
-    )
-
-    # Race Selectors
-    race_options = mortality_df["Race"].unique().tolist()
-    race = st.sidebar.multiselect("Select Races:", options=race_options, default=race_options)
-
-    # Trend Selector for Chart #1
-    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-    default_trend_values = ["Cigarette", "Diet", "Statin"]
-    trends = st.sidebar.multiselect("Multiple Trend Selector (For Chart #1):", options=trend_options, default=default_trend_values)
-
-    # Outcome Selector
-    outcome_options = mortality_df["cause_of_death"].unique().tolist()
-    outcomes = st.sidebar.multiselect("Select Cause(s) of Death:", options=outcome_options, default=["Acute Myocardial Infarction"])
-
-    # Apply filters
-    subset = mortality_df[(mortality_df['Year'] >= year_range[0]) & (mortality_df['Year'] <= year_range[1])]
-    subset = subset[subset['State'].isin(states)]
-    subset = subset[subset['Gender'] == sex]
-    age_group_start_factor = age_group_mapping[age_group_range[0]]
-    age_group_end_factor = age_group_mapping[age_group_range[1]]
-    subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) & (subset['Age_Group_Factor'] <= age_group_end_factor)]
-    subset = subset[subset['Race'].isin(race)]
-    subset = subset[subset['cause_of_death'].isin(outcomes)]
-    #Convert Mortality to Rates After Final Filtering
-    subset["Mortality_Rate"] = subset["Deaths"] / subset["Population"] * 100_000
-    cause_average_mortality_rate = subset.groupby(['cause_of_death','Year'])['Mortality_Rate'].mean().reset_index()
-    state_average_mortality_rate = subset.groupby(['State','Year'])['Mortality_Rate'].mean().reset_index()
-
-
-    # Page Navigation
-    st.sidebar.title('Navigation')
-    page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
-
-    # Page-specific filters and page function calls
-    if page == "Overview":
-        st.title('Overview')
-        st.write('Welcome to the Health Trends Dashboard.')
-   
-
-    elif page == "Google Trends Analysis":
-          # Place Google Trends Analysis-specific filters in the sidebar
-      # Call the page function with the selected trends
-      google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate)
-
-    elif page == "Mortality Trends":
-    # If there are specific filters for Mortality Trends, they would go here.
-    # As it looks like you've moved all filters globally, there might not be additional filters.
-    # If there are, define and use them here.
-        mortality_trends_page(cause_average_mortality_rate, state_average_mortality_rate)
-
-    elif page == "Correlation Analysis":
-    # If there are specific filters for Correlation Analysis, they would be placed here.
-         correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df)
-
-if __name__ == "__main__":
-    main()
 
 
 def overview_page():
@@ -378,3 +269,112 @@ def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate
     st.altair_chart(combined_chart,use_container_width=True)
 
 ######################################
+def main():
+    # Load your data here (if it's not part of page-specific functions)
+    
+      ##Read Data
+    mortality_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/mortality_data.csv")
+    gtrend_US_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_US_trends.csv")
+    gtrend_state_df = pd.read_csv("https://raw.githubusercontent.com/cginder/BMI706/main/Data/Merged%20Data/search_state_based.csv")
+
+    ##Data Processing
+    #Combine US Trend Data Into Annual Data
+    gtrend_US_df['Month'] = pd.to_datetime(gtrend_US_df['Month'])
+    gtrend_US_df['Year'] = gtrend_US_df['Month'].dt.year #convert to date/time format
+    annual_avg_df = gtrend_US_df.groupby(['Year', 'Search_Term'])['Trend_Value'].mean().reset_index() #calculate average per year
+    annual_avg_df.rename(columns={'Trend_Value': 'Annual_Avg_Trend_Value'}, inplace=True) #rename for clarity
+    #Merge State Level Data to Get Relative Ranking (Annual Search Term Value * Relative Search Term Value for that state, that year)
+    merged_df = pd.merge(gtrend_state_df, annual_avg_df, on=['Year', 'Search_Term'], how='left')
+    merged_df['Relative_Weighting'] = merged_df['Annual_Avg_Trend_Value'] * merged_df['Search_Term_Value'] / 100
+    merged_df.rename(columns={'Region':'State'},inplace=True)
+    #Convert Age Group Codes to Factors
+    age_group_mapping = {
+        '15-24': 1,
+        '25-34': 2,
+        '35-44': 3,
+        '45-54': 4,
+        '55-64': 5,
+        '65-74': 6,
+        '75-84': 7,
+        '85+': 8  
+    }
+     
+    age_group_codes = list(age_group_mapping.keys())
+    mortality_df['Age_Group_Factor'] = mortality_df['Ten-Year Age Groups Code'].map(age_group_mapping)
+
+    # Global sidebar controls:
+    st.sidebar.title('Global Filters')
+
+    # State Selectors
+    state_options = mortality_df['State'].unique().tolist()
+    default_states = ["Indiana", "Massachusetts"]
+    states = st.sidebar.multiselect("State:", options=state_options, default=default_states)
+
+    # Year Range Selector
+    year_range = st.sidebar.slider('Years:', 2004, 2019, (2007, 2014))
+
+    # Sex Selector
+    sex = st.sidebar.radio("Sex", ["Male", "Female"])
+
+    # Age Group Range Selector
+    age_group_range = st.sidebar.select_slider(
+        "Select Age Group Range:",
+        options=age_group_codes,
+        value=('15-24', '75-84')
+    )
+
+    # Race Selectors
+    race_options = mortality_df["Race"].unique().tolist()
+    race = st.sidebar.multiselect("Select Races:", options=race_options, default=race_options)
+
+    # Trend Selector for Chart #1
+    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+    default_trend_values = ["Cigarette", "Diet", "Statin"]
+    trends = st.sidebar.multiselect("Multiple Trend Selector (For Chart #1):", options=trend_options, default=default_trend_values)
+
+    # Outcome Selector
+    outcome_options = mortality_df["cause_of_death"].unique().tolist()
+    outcomes = st.sidebar.multiselect("Select Cause(s) of Death:", options=outcome_options, default=["Acute Myocardial Infarction"])
+
+    # Apply filters
+    subset = mortality_df[(mortality_df['Year'] >= year_range[0]) & (mortality_df['Year'] <= year_range[1])]
+    subset = subset[subset['State'].isin(states)]
+    subset = subset[subset['Gender'] == sex]
+    age_group_start_factor = age_group_mapping[age_group_range[0]]
+    age_group_end_factor = age_group_mapping[age_group_range[1]]
+    subset = subset[(subset['Age_Group_Factor'] >= age_group_start_factor) & (subset['Age_Group_Factor'] <= age_group_end_factor)]
+    subset = subset[subset['Race'].isin(race)]
+    subset = subset[subset['cause_of_death'].isin(outcomes)]
+    #Convert Mortality to Rates After Final Filtering
+    subset["Mortality_Rate"] = subset["Deaths"] / subset["Population"] * 100_000
+    cause_average_mortality_rate = subset.groupby(['cause_of_death','Year'])['Mortality_Rate'].mean().reset_index()
+    state_average_mortality_rate = subset.groupby(['State','Year'])['Mortality_Rate'].mean().reset_index()
+
+
+    # Page Navigation
+    st.sidebar.title('Navigation')
+    page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
+
+    # Page-specific filters and page function calls
+    if page == "Overview":
+        st.title('Overview')
+        st.write('Welcome to the Health Trends Dashboard.')
+   
+
+    elif page == "Google Trends Analysis":
+          # Place Google Trends Analysis-specific filters in the sidebar
+      # Call the page function with the selected trends
+      google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate)
+
+    elif page == "Mortality Trends":
+    # If there are specific filters for Mortality Trends, they would go here.
+    # As it looks like you've moved all filters globally, there might not be additional filters.
+    # If there are, define and use them here.
+        mortality_trends_page(cause_average_mortality_rate, state_average_mortality_rate)
+
+    elif page == "Correlation Analysis":
+    # If there are specific filters for Correlation Analysis, they would be placed here.
+         correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df)
+
+if __name__ == "__main__":
+    main()
