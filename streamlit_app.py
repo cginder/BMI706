@@ -113,8 +113,8 @@ def main():
     # If there are specific filters for Correlation Analysis, they would be placed here.
          correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df)
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
 
 
 def overview_page():
