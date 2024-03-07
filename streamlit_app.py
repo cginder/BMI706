@@ -34,7 +34,7 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
             title="Google Trends Over Time",
             width=550
         )
-chart_3_trend = st.selectbox("Single Trend Selector",
+        chart_3_trend = st.selectbox("Single Trend Selector",
             options = trend_options)
     #State Based Google Trends
         chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
