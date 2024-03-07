@@ -91,6 +91,7 @@ def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate
     state_selection = alt.selection_single(
         fields=["State"],bind='legend',name='SelectState'
     )
+    
 
     points = alt.Chart(connected_scatter_df).mark_point().encode(
         x=alt.X("Relative_Weighting:Q",title="Relative Search Trend"),
