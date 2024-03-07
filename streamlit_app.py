@@ -116,28 +116,27 @@ def google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df):
     st.title('Google Trends Analysis')
 
 #Different Google Trends Graph
-chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
-    x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("Annual_Avg_Trend_Value"),
-    color=alt.Color("Search_Term",legend=alt.Legend(orient='right'))
-).properties(
-    title="ROBABLY DISCARD: Google Trends Over Time",
-    width=550
-)
-
-st.altair_chart(chart,use_container_width=True)
+    chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
+        x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
+        y=alt.Y("Annual_Avg_Trend_Value"),
+        color=alt.Color("Search_Term",legend=alt.Legend(orient='right'))
+    ).properties(
+        title="ROBABLY DISCARD: Google Trends Over Time",
+        width=550
+    )
 
 #State Based Google Trends
-chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
-    x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("Relative_Weighting:Q"),
-    color=alt.Color("State",legend=alt.Legend(orient='right'))
-).properties(
-    title=f"Google Searches for {chart_3_trend} Over Time By State",
-    width=550
-)
+    chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
+      x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
+      y=alt.Y("Relative_Weighting:Q"),
+      color=alt.Color("State",legend=alt.Legend(orient='right'))
+    ).properties(
+     title=f"Google Searches for {chart_3_trend} Over Time By State",
+     width=550
+    )
 #st.write(subset.head())
-st.altair_chart(chart3,use_container_width=True)
+    st.altair_chart(chart,use_container_width=True)
+    st.altair_chart(chart3,use_container_width=True)
 
 
 
@@ -386,4 +385,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
     
