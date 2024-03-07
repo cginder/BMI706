@@ -365,7 +365,7 @@ def main():
     elif page == "Google Trends Analysis":
           # Place Google Trends Analysis-specific filters in the sidebar
       # Call the page function with the selected trends
-      google_trends_page(merged_df, gtrend_US_df, trend,trend_subset_US_df, trend_subset_state_df)
+      google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df)
 
     elif page == "Mortality Trends":
     # If there are specific filters for Mortality Trends, they would go here.
