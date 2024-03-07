@@ -83,12 +83,12 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
     st.title('Correlation Analysis')
     #Trend Selector
     trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-    selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
-    chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
-        options = trend_options)
+#    selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
+    connected_scatter_trend = st.selectbox("Single Trend Selector (For Connected Scatter Plot)",
+#        options = trend_options)
     trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
                         (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
-    trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
+    trend_subset_state_df = merged_df[(merged_df["Search_Term"] == connected_scatter_trend) &
                             (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
                             (merged_df['State'].isin(states))]
 
