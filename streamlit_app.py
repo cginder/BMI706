@@ -49,7 +49,7 @@ subset = subset[subset['Gender'] == sex]
 
 #Age Group Range Selector
 age_group_range = st.select_slider(
-    "Select Age Group Range test test:",
+    "Select Age Group Range:",
     options=age_group_codes,
     value=('15-24','75-84')
 )
@@ -107,6 +107,14 @@ subset["Mortality_Rate"] = subset["Deaths"]/subset["Population"] * 100_000
 cause_average_mortality_rate = subset.groupby(['cause_of_death','Year'])['Mortality_Rate'].mean().reset_index()
 state_average_mortality_rate = subset.groupby(['State','Year'])['Mortality_Rate'].mean().reset_index()
 
+def overview_page():
+    st.title('Overview')
+    st.write('Welcome to the Health Trends Dashboard.')
+
+
+def google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df):
+    st.title('Google Trends Analysis')
+
 #Different Google Trends Graph
 chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
     x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
@@ -119,18 +127,6 @@ chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
 
 st.altair_chart(chart,use_container_width=True)
 
-
-#Different Mortality Trends Over Time
-chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
-    x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
-    color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
-).properties(
-    title="PROBABLY DISCARD: Mortality Trends Over Time",
-    width=550
-)
-st.altair_chart(chart2,use_container_width=True)
-
 #State Based Google Trends
 chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
     x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
@@ -142,6 +138,24 @@ chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
 )
 #st.write(subset.head())
 st.altair_chart(chart3,use_container_width=True)
+
+
+
+
+
+
+def mortality_trends_page(mortality_df, subset, cause_average_mortality_rate):
+    st.title('Mortality Trends')
+#Different Mortality Trends Over Time
+chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
+    x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
+    y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
+    color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
+).properties(
+    title="PROBABLY DISCARD: Mortality Trends Over Time",
+    width=550
+)
+st.altair_chart(chart2,use_container_width=True)
 
 #Different Mortality Trends Over Time
 outcomes_title = ', '.join(outcomes)
@@ -157,6 +171,10 @@ chart4 = alt.Chart(state_average_mortality_rate).mark_line(point=True).encode(
 )
 st.altair_chart(chart4,use_container_width=True)
 
+
+def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
+    st.title('Correlation Analysis')
+   
 #Connected Scatter Plots
 connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
 
@@ -210,6 +228,9 @@ lines = alt.Chart(connected_scatter_df).mark_line().encode(
 chart5 = points + lines
 
 st.altair_chart(chart5,use_container_width=True)
+
+
+
 
 
 ### Heatmap
@@ -341,3 +362,27 @@ combined_chart = alt.vconcat(chart7,chart8+ regression_line)
 
 st.altair_chart(combined_chart,use_container_width=True)
 
+######################################
+
+
+
+
+# Main function to structure the Streamlit app with different pages
+def main():
+    
+    # Side bar for navigation
+    st.sidebar.title('Navigation')
+    page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
+
+    # Page routing
+    if page == "Overview":
+        overview_page()
+    elif page == "Mortality Trends":
+        mortality_trends_page(mortality_df, subset, cause_average_mortality_rate)  # Pass necessary data
+    elif page == "Google Trends Analysis":
+        google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df)  # Pass necessary data
+    elif page == "Correlation Analysis":
+        correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart)  # Pass necessary data
+
+if __name__ == "__main__":
+    main()
