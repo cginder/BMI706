@@ -379,13 +379,9 @@ def main():
       google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range, states)
 
     elif page == "Mortality Trends":
-    # If there are specific filters for Mortality Trends, they would go here.
-    # As it looks like you've moved all filters globally, there might not be additional filters.
-    # If there are, define and use them here.
         mortality_trends_page(cause_average_mortality_rate, state_average_mortality_rate,outcomes)
 
     elif page == "Correlation Analysis":
-    # If there are specific filters for Correlation Analysis, they would be placed here.
          correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options,states,year_range,trends)
 
 if __name__ == "__main__":
