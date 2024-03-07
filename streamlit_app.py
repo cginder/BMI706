@@ -115,8 +115,6 @@ def main():
     
     # Filters specific to the Mortality Trends page
     elif page == "Mortality Trends":
-        age_group_codes = list(age_group_mapping.keys())
-        selected_age_groups = st.sidebar.select_slider("Select Age Group Range:", options=age_group_codes, value=('15-24', '75-84'))
         mortality_trends_page(mortality_df, subset, cause_average_mortality_rate, year_range, states, selected_age_groups)
 
     
