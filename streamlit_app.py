@@ -165,7 +165,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
     correlation_by_cause = heatmap_df.groupby(['Search_Term','cause_of_death']).apply(calculate_correlation).reset_index(name='Correlation')
 
     chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
-    x= alt.X ('Search_Term:N', title = 'Search Term')
+    x= alt.X ('Search_Term:N', title = 'Search Term'),
     y=alt.Y('cause_of_death:N', title='Cause of Death'),
     color='Correlation:Q'
     ).properties(
