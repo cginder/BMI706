@@ -76,14 +76,7 @@ def main():
     default_trend_values = ["Cigarette","Diet","Statin"]
     trends = st.multiselect("Multiple Trend Selector (For Chart # 1)",
         options = trend_options,default = default_trend_values)
-    #Trend Selector
-    chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
-        options = trend_options)
-    trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
-                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
-    trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
-                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
-                            (merged_df['State'].isin(states))]
+   
     #Outcome Selector
     outcome_options = subset["cause_of_death"].unique().tolist()
     outcomes = st.multiselect("Select Cause(s) of Death",
@@ -106,12 +99,6 @@ def main():
     # For example, if you need to filter some dataframes based on the year_range and selected_states
     # and those filtered dataframes are used across multiple pages:
     # filtered_data = original_data[(original_data['Year'].between(*year_range)) & (original_data['State'].isin(selected_states))]
-
-    # Global sidebar controls:
-    st.sidebar.title('Global Filters')
-    year_range = st.sidebar.slider('Select Year Range:', 2004, 2019, (2007, 2014))
-    selected_states = st.sidebar.multiselect("Select States:", options=mortality_df['State'].unique().tolist(), default=["Indiana", "Massachusetts"])
-
     
     # Page Navigation
     st.sidebar.title('Navigation')
@@ -128,6 +115,7 @@ def main():
         age_group_codes = list(age_group_mapping.keys())
         selected_age_groups = st.sidebar.select_slider("Select Age Group Range:", options=age_group_codes, value=('15-24', '75-84'))
         mortality_trends_page(mortality_df, subset, cause_average_mortality_rate, year_range, states, selected_age_groups)
+
     
     # The Correlation Analysis page might use a different set of filters or none
     elif page == "Correlation Analysis":
@@ -149,6 +137,15 @@ def overview_page():
 def google_trends_page(merged_df, trend_subset_US_df, trend_subset_state_df):
         st.title('Google Trends Analysis')
 
+    trend_options = gtrend_US_df["Search_Term"].unique().tolist()  # Make sure this line is inside the function if trend_options isn't globally defined    
+    #Trend Selector
+    chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
+        options = trend_options)
+    trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
+                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
+    trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
+                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
+                            (merged_df['State'].isin(states))]
     #Different Google Trends Graph
         chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
             x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
