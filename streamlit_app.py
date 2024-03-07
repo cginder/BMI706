@@ -126,8 +126,8 @@ def google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate):
         st.title('Google Trends Analysis')
 
     #Trend Selector
-    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-      selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
+        trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+        selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
         chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
             options = trend_options)
         trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
