@@ -213,18 +213,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
     # Give the 'index' column a more meaningful name
     lag_heatmap_df.rename(columns={'index': 'Lag'}, inplace=True)
 
-    chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
-        x='Lag:O',
-        y=alt.Y('Search_Term:N', title='Search Term'),
-        color='Correlation:Q'
-    ).properties(
-        title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
-               "subtitle":f"Selected outcome:{heat_outcome}"}, 
-        width=550
-    )
-
-
-    st.altair_chart(chart10,use_container_width=True)
+    
 
 
 
@@ -244,7 +233,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
         )
     ).properties(
         title={
-            "text": "C7: Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
+            "text": "Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
             "subtitle": f"Selected outcome: {heat_outcome}"
         },
         width=550
@@ -262,7 +251,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
     ).mark_point().encode(
         x= alt.X("Annual_Avg_Trend_Value",title='Annual Average Trend Value'),
         y=alt.Y('Mortality_Rate:Q', title='Mortality Rate'),
-        color='Search_Term:N'
+        color=alt.Color('Search_Term:N', title='Search Term')
     # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
     ).properties(
          width=550
