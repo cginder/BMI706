@@ -249,8 +249,8 @@ def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate
      lag_heat_selection
     ).mark_point().encode(
         x="Annual_Avg_Trend_Value",
-        y="Mortality_Rate:Q",
-        color='Search_Term:N'
+        y="{heat_outcome}:Q",
+        color='{search_heat_selection}:N'
     # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
     ).properties(
          width=550
@@ -261,7 +261,7 @@ def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate
     )
 
     regression_line = chart8.transform_regression(
-        'Annual_Avg_Trend_Value', 'Mortality_Rate', method="linear"
+        'Annual_Avg_Trend_Value', '{heat_outcome}', method="linear"
     ).mark_line(
         color='lightgrey', strokeDash=[5, 5]
     )
