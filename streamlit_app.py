@@ -32,7 +32,7 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
             y=alt.Y("Annual_Avg_Trend_Value"),
             color=alt.Color("Search_Term",legend=alt.Legend(orient='right'))
         ).properties(
-            title="Google Trends Over Time",
+            title="ROBABLY DISCARD: Google Trends Over Time",
             width=550
         )
 
@@ -59,7 +59,7 @@ def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_
         y=alt.Y("Mortality_Rate:Q",title="Mortality Rate per 100,000"),
         color=alt.Color("cause_of_death",legend=alt.Legend(orient='right'))
     ).properties(
-        title="Mortality Trends Over Time",
+        title="PROBABLY DISCARD: Mortality Trends Over Time",
         width=550
     )
     
@@ -79,21 +79,9 @@ def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_
     st.altair_chart(chart4,use_container_width=True)
 
 
-def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options,states,year_range,trends):
+def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options):
     st.title('Correlation Analysis')
-    #Trend Selector
-    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-#    selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
-    connected_scatter_trend = st.selectbox("Single Trend Selector (For Connected Scatter Plot)",
-        options = trend_options)
-    trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
-                        (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1])]
-    trend_subset_state_df = merged_df[(merged_df["Search_Term"] == connected_scatter_trend) &
-                            (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
-                            (merged_df['State'].isin(states))]
-
-
-
+   
 #Connected Scatter Plots
     connected_scatter_df  = pd.merge(trend_subset_state_df,state_average_mortality_rate,on=['State','Year'],how='inner')
 
@@ -262,7 +250,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
     ).mark_point().encode(
         x="Annual_Avg_Trend_Value",
         y="{heat_outcome}:Q",
-        color='{search_heat_selection}:N'
+        color='Search_Term:N'
     # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
     ).properties(
          width=550
@@ -387,7 +375,7 @@ def main():
 
     elif page == "Correlation Analysis":
     # If there are specific filters for Correlation Analysis, they would be placed here.
-         correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options,states,year_range,trends)
+         correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df, outcome_options)
 
 if __name__ == "__main__":
     main()
