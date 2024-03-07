@@ -165,8 +165,8 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
     correlation_by_cause = heatmap_df.groupby(['Search_Term','cause_of_death']).apply(calculate_correlation).reset_index(name='Correlation')
 
     chart6 = alt.Chart(correlation_by_cause).mark_rect().encode(
-        x='Search_Term:N',
-    y='cause_of_death:N',
+    x= alt.X ('Search_Term:N', title = 'Search Term')
+    y=alt.Y('cause_of_death:N', title='Cause of Death'),
     color='Correlation:Q'
     ).properties(
         title="Correlation of Google Search Terms with Cause of Mortality",
@@ -215,7 +215,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
 
     chart10 = alt.Chart(lag_heatmap_df).mark_rect().encode(
         x='Lag:O',
-        y='Search_Term:N',
+        y=alt.Y('Search_Term:N', title='Search Term'),
         color='Correlation:Q'
     ).properties(
         title={"text":"Correlation of Google Search Terms with Cause of Mortality, Offset by Lag",
