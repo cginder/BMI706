@@ -367,25 +367,38 @@ def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
 
 # Main function to structure the Streamlit app with different pages
 def main():
+    # Load your data
+    mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df = load_and_preprocess_data()
     
-    year_range = st.sidebar.slider('Select Year Range:', 2000, 2020, (2010, 2015))
+    # Global selections: These selections will impact all pages if necessary
+    year_range = st.sidebar.slider('Select Year Range:', 2004, 2019, (2007, 2014))
+    states = st.sidebar.multiselect("Select States:", options=subset['State'].unique().tolist(), default=["Indiana", "Massachusetts"])
     
     # Page Navigation
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
-    
-    # Page-specific Filters (only shown when the respective page is active)
+
+    # Filters specific to the Google Trends Analysis page
     if page == "Google Trends Analysis":
-        trend_selector = st.sidebar.selectbox("Select Google Trend:", ['Trend 1', 'Trend 2', 'Trend 3'])
-        google_trends_page(trend_selector)
+        trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+        selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
+        google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states, selected_trends)
+    
+    # Filters specific to the Mortality Trends page
     elif page == "Mortality Trends":
-        age_group_selector = st.sidebar.selectbox("Select Age Group:", ['0-10', '11-20', '21-30'])
-        mortality_trends_page(age_group_selector)
+        age_group_codes = list(age_group_mapping.keys())
+        selected_age_groups = st.sidebar.select_slider("Select Age Group Range:", options=age_group_codes, value=('15-24', '75-84'))
+        mortality_trends_page(mortality_df, subset, cause_average_mortality_rate, year_range, states, selected_age_groups)
+    
+    # The Correlation Analysis page might use a different set of filters or none
     elif page == "Correlation Analysis":
-        correlation_analysis_page()  # This page might not need extra selectors
+        correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states)
+    
+    # The Overview page might not need specific filters
     elif page == "Overview":
-        overview_page()
+        overview_page(mortality_df, gtrend_US_df, gtrend_state_df)
 
 if __name__ == "__main__":
     main()
+
 
