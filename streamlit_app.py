@@ -94,14 +94,14 @@ def main():
 
     # Page-specific filters and page function calls
     if page == "Overview":
-         overview_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate) 
+        st.title('Overview')
+        st.write('Welcome to the Health Trends Dashboard.')
+   
 
     elif page == "Google Trends Analysis":
           # Place Google Trends Analysis-specific filters in the sidebar
-      trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-      selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
       # Call the page function with the selected trends
-      google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate)
+      google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate)
 
     elif page == "Mortality Trends":
     # If there are specific filters for Mortality Trends, they would go here.
@@ -111,7 +111,7 @@ def main():
 
     elif page == "Correlation Analysis":
     # If there are specific filters for Correlation Analysis, they would be placed here.
-         correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate)
+         correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df)
 
     if __name__ == "__main__":
         main()
@@ -122,10 +122,12 @@ def overview_page():
         st.write('Welcome to the Health Trends Dashboard.')
 
 
-def google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, trends, outcomes, race,age_group_range, sex, year_range, states, cause_average_mortality_rate, state_average_mortality_rate):
+def google_trends_page(merged_df, gtrend_US_df, cause_average_mortality_rate):
         st.title('Google Trends Analysis')
 
     #Trend Selector
+    trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+      selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
         chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
             options = trend_options)
         trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
@@ -186,7 +188,7 @@ def mortality_trends_page(cause_average_mortality_rate, state_average_mortality_
     st.altair_chart(chart4,use_container_width=True)
 
 
-def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart, mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate):
+def correlation_analysis_page(trend_subset_state_df,state_average_mortality_rate, mortality_df ,annual_avg_df):
     st.title('Correlation Analysis')
    
 #Connected Scatter Plots
