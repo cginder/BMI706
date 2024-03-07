@@ -94,7 +94,7 @@ def main():
 
     # Page-specific filters and page function calls
     if page == "Overview":
-         overview_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate) 
+         overview_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate) 
 
     elif page == "Google Trends Analysis":
           # Place Google Trends Analysis-specific filters in the sidebar
@@ -107,11 +107,11 @@ def main():
     # If there are specific filters for Mortality Trends, they would go here.
     # As it looks like you've moved all filters globally, there might not be additional filters.
     # If there are, define and use them here.
-        mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate)
+        mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate)
 
     elif page == "Correlation Analysis":
     # If there are specific filters for Correlation Analysis, they would be placed here.
-         correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate)
+         correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate)
 
 if __name__ == "__main__":
     main()
@@ -158,7 +158,7 @@ def google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annua
 
 
 
-def mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate):
+def mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate):
     st.title('Mortality Trends')
 #Different Mortality Trends Over Time
     chart2 = alt.Chart(cause_average_mortality_rate).mark_line(point=True).encode(
@@ -186,7 +186,7 @@ def mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,an
     st.altair_chart(chart4,use_container_width=True)
 
 
-def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart, mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, selected_trends, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate):
+def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart, mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate):
     st.title('Correlation Analysis')
    
 #Connected Scatter Plots
