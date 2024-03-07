@@ -88,27 +88,26 @@ def main():
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
 
+    # Page-specific filters and page function calls
     if page == "Overview":
-        overview_page(mortality_df, gtrend_US_df, gtrend_state_df)
+         overview_page(mortality_df, gtrend_US_df, gtrend_state_df) 
 
-    # Filters specific to the Google Trends Analysis page
     elif page == "Google Trends Analysis":
-        trend_options = gtrend_US_df["Search_Term"].unique().tolist()
-        selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
-        google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states)
-    
-    # Filters specific to the Mortality Trends page
-    elif page == "Mortality Trends":
-        mortality_trends_page(mortality_df, subset, cause_average_mortality_rate, year_range, states, selected_age_groups)
+          # Place Google Trends Analysis-specific filters in the sidebar
+      trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+      selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
+      # Call the page function with the selected trends
+         google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, selected_trends, year_range, states)
 
-    
-    # The Correlation Analysis page might use a different set of filters or none
+    elif page == "Mortality Trends":
+    # If there are specific filters for Mortality Trends, they would go here.
+    # As it looks like you've moved all filters globally, there might not be additional filters.
+    # If there are, define and use them here.
+         mortality_trends_page(mortality_df, subset, year_range, states)
+
     elif page == "Correlation Analysis":
-        correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states)
-    
-    # The Overview page might not need specific filters
-    elif page == "Overview":
-        overview_page(mortality_df, gtrend_US_df, gtrend_state_df)
+    # If there are specific filters for Correlation Analysis, they would be placed here.
+         correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, year_range, states)
 
 if __name__ == "__main__":
     main()
@@ -373,6 +372,7 @@ def correlation_analysis_page(heatmap_df, lag_heatmap_df, combined_chart):
     st.altair_chart(combined_chart,use_container_width=True)
 
 ######################################
+
 
 
 
