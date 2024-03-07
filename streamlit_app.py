@@ -107,7 +107,7 @@ def main():
     # If there are specific filters for Mortality Trends, they would go here.
     # As it looks like you've moved all filters globally, there might not be additional filters.
     # If there are, define and use them here.
-        mortality_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, subset,annual_avg_df, merged_df, year_range, trends, outcomes, race,age_group_range, sex, states, cause_average_mortality_rate, state_average_mortality_rate)
+        mortality_trends_page(cause_average_mortality_rate, state_average_mortality_rate)
 
     elif page == "Correlation Analysis":
     # If there are specific filters for Correlation Analysis, they would be placed here.
