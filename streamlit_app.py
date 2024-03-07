@@ -97,7 +97,7 @@ def main():
       trend_options = gtrend_US_df["Search_Term"].unique().tolist()
       selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
       # Call the page function with the selected trends
-         google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, selected_trends, year_range, states)
+      google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, selected_trends, year_range, states)
 
     elif page == "Mortality Trends":
     # If there are specific filters for Mortality Trends, they would go here.
