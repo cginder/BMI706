@@ -26,16 +26,6 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
         trend_subset_state_df = merged_df[(merged_df["Search_Term"] == chart_3_trend) &
                                 (merged_df['Year'] >= year_range[0]) & (merged_df['Year'] <= year_range[1]) &
                                 (merged_df['State'].isin(states))]
-    #State Based Google Trends
-        chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
-          x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
-          y=alt.Y("Relative_Weighting:Q"),
-          color=alt.Color("State",legend=alt.Legend(orient='right'))
-        ).properties(
-         title=f"Google Searches for {chart_3_trend} Over Time By State",
-         width=550
-        )
-    
     #Different Google Trends Graph
         chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
             x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
@@ -46,7 +36,15 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
             width=550
         )
 
-    
+    #State Based Google Trends
+        chart3 = alt.Chart(trend_subset_state_df).mark_line(point=True).encode(
+          x=alt.X("Year:O",axis=alt.Axis(format="d", title="Year")),
+          y=alt.Y("Relative_Weighting:Q"),
+          color=alt.Color("State",legend=alt.Legend(orient='right'))
+        ).properties(
+         title=f"Google Searches for {chart_3_trend} Over Time By State",
+         width=550
+        )
     #st.write(subset.head())
         st.altair_chart(chart,use_container_width=True)
         st.altair_chart(chart3,use_container_width=True)
