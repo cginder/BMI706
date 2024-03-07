@@ -261,7 +261,7 @@ def correlation_analysis_page(gtrend_US_df,trend_options,merged_df,state_average
      lag_heat_selection
     ).mark_point().encode(
         x= alt.X("Annual_Avg_Trend_Value",title='Annual Average Trend Value'),
-        y=alt.Y('Mortality_Rate:Q', title='Mortality Rate')
+        y=alt.Y('Mortality_Rate:Q', title='Mortality Rate'),
         color='Search_Term:N'
     # opacity= alt.condition(search_heat_selection,alt.Color('Search_Term:N'),alt.value('lightgray'))
     ).properties(
