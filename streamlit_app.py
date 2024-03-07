@@ -356,10 +356,6 @@ def main():
         st.altair_chart(chart3,use_container_width=True)
 
 
-
-
-
-
     # Global data processing based on selections (if applicable):
     # For example, if you need to filter some dataframes based on the year_range and selected_states
     # and those filtered dataframes are used across multiple pages:
@@ -370,28 +366,32 @@ def main():
     year_range = st.sidebar.slider('Select Year Range:', 2004, 2019, (2007, 2014))
     selected_states = st.sidebar.multiselect("Select States:", options=mortality_df['State'].unique().tolist(), default=["Indiana", "Massachusetts"])
 
-    # Page Navigation:
+    
+    # Page Navigation
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
 
-    # Page-specific content:
+    # Filters specific to the Google Trends Analysis page
     if page == "Google Trends Analysis":
-        trend_subset_US_df = gtrend_US_df[gtrend_US_df['Year'].between(*year_range)]
-        trend_subset_state_df = gtrend_state_df[gtrend_state_df['Year'].between(*year_range)]
-        google_trends_page(trend_subset_US_df, trend_subset_state_df)
+        trend_options = gtrend_US_df["Search_Term"].unique().tolist()
+        selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
+        google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states, selected_trends)
+    
+    # Filters specific to the Mortality Trends page
     elif page == "Mortality Trends":
-        subset = mortality_df[mortality_df['Year'].between(*year_range)]
-        cause_average_mortality_rate = subset.groupby(['cause_of_death', 'Year'])['Mortality_Rate'].mean().reset_index()
-        mortality_trends_page(subset, cause_average_mortality_rate)
+        age_group_codes = list(age_group_mapping.keys())
+        selected_age_groups = st.sidebar.select_slider("Select Age Group Range:", options=age_group_codes, value=('15-24', '75-84'))
+        mortality_trends_page(mortality_df, subset, cause_average_mortality_rate, year_range, states, selected_age_groups)
+    
+    # The Correlation Analysis page might use a different set of filters or none
     elif page == "Correlation Analysis":
-        heatmap_df = None # Placeholder, replace with actual data preparation code for heatmap
-        lag_heatmap_df = None # Placeholder, replace with actual data preparation code for lag heatmap
-        correlation_analysis_page(heatmap_df, lag_heatmap_df)
+        correlation_analysis_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states)
+    
+    # The Overview page might not need specific filters
     elif page == "Overview":
-        overview_page()
+        overview_page(mortality_df, gtrend_US_df, gtrend_state_df)
 
 if __name__ == "__main__":
     main()
-
 
 
