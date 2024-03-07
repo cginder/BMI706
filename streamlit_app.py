@@ -104,8 +104,11 @@ def main():
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Select a page:", ["Overview", "Mortality Trends", "Google Trends Analysis", "Correlation Analysis"])
 
+    if page == "Overview":
+        overview_page(mortality_df, gtrend_US_df, gtrend_state_df)
+
     # Filters specific to the Google Trends Analysis page
-    if page == "Google Trends Analysis":
+    elif page == "Google Trends Analysis":
         trend_options = gtrend_US_df["Search_Term"].unique().tolist()
         selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
         google_trends_page(mortality_df, gtrend_US_df, gtrend_state_df, annual_avg_df, merged_df, year_range, states)
