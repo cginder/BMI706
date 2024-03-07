@@ -19,17 +19,6 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
     #Trend Selector
         trend_options = gtrend_US_df["Search_Term"].unique().tolist()
         selected_trends = st.sidebar.multiselect("Select Trend(s):", options=trend_options, default=["Cigarette", "Diet", "Statin"])
-        
-    #Different Google Trends Graph
-        chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
-            x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
-            y=alt.Y("Annual_Avg_Trend_Value", title = "Annual Average Trend Value"),
-            color=alt.Color("Search_Term", title = 'Search Term',legend=alt.Legend(orient='right'))
-        ).properties(
-            title="Google Trends Over Time",
-            width=550
-        )
-
         chart_3_trend = st.selectbox("Single Trend Selector (For Chart # 3)",
             options = trend_options)
         trend_subset_US_df = merged_df[merged_df["Search_Term"].isin(trends) & 
@@ -46,6 +35,18 @@ def google_trends_page(merged_df,gtrend_US_df, trend_options, trends, year_range
          title=f"Google Searches for {chart_3_trend} Over Time By State",
          width=550
         )
+    
+    #Different Google Trends Graph
+        chart = alt.Chart(trend_subset_US_df).mark_line(point=True).encode(
+            x=alt.X("Year",axis=alt.Axis(format="d", title="Year")),
+            y=alt.Y("Annual_Avg_Trend_Value", title = "Annual Average Trend Value"),
+            color=alt.Color("Search_Term", title = 'Search Term',legend=alt.Legend(orient='right'))
+        ).properties(
+            title="Google Trends Over Time",
+            width=550
+        )
+
+    
     #st.write(subset.head())
         st.altair_chart(chart,use_container_width=True)
         st.altair_chart(chart3,use_container_width=True)
